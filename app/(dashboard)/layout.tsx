@@ -5,6 +5,8 @@ import "../globals.css";
 import AppTopbar from "@/components/layout/app-topbar";
 import AppSidebar from "@/components/layout/app-sidebar";
 import PageContainer from "@/components/layout/page-container";
+import { SidebarProvider } from "@/contexts/sidebar-context";
+import DraggableCTA from "@/components/shared/cta-button";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,15 +31,20 @@ export default function DashboardLayout({
   console.log(children)
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <div className="flex min-h-screen">
-        <AppSidebar />
-        <div className="flex flex-1 flex-col">
-          <AppTopbar />
-          <PageContainer>
-            {children}
-          </PageContainer>
+      <SidebarProvider>
+        <div className="flex min-h-screen">
+          <AppSidebar />
+          <div className="flex flex-1 flex-col">
+            <AppTopbar />
+            <PageContainer>
+              <>
+                <DraggableCTA />
+                {children}
+              </>
+            </PageContainer>
+          </div>
         </div>
-      </div>
+      </SidebarProvider>
     </div>
   );
 }

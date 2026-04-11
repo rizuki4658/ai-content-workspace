@@ -19,6 +19,8 @@ export const metadata: Metadata = {
 
 export default function DashboardPage() {
   return (
-    <div>Dashboard</div>
+    Array.from({length : 100}).map((_, i) => (
+      <div key={i}>Dashboard {i}</div>
+    ))
   )
 }

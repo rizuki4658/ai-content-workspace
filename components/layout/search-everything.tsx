@@ -29,7 +29,7 @@ import {
   CommandSeparator,
 } from "@/components/ui/command"
 
-export default function SearchEverything() {
+export default function SearchEverything({ dense } : { dense: boolean } = { dense: false }) {
   const [open, setOpen] = React.useState(false)
   const [isLoading, setIsLoading] = React.useState(false)
   const [search, setSearch] = React.useState("")
@@ -66,21 +66,30 @@ export default function SearchEverything() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          size="lg"
-          variant="outline"
-          className="flex items-center gap-4 rounded-sm text-gray-400 hover:bg-gray-50 hover:text-gray-400"
-        >
-          <div className="flex items-center justify-start gap-4">
-            <Search className="h-4 w-4" />
-            <p className="min-w-48 text-left lg:min-w-2xs">Search...</p>
-          </div>
+        {
+          !dense ?
+          <Button
+            size="lg"
+            variant="outline"
+            className="flex items-center gap-4 rounded-sm text-gray-400 hover:bg-gray-50 hover:text-gray-400"
+          >
+            <div className="flex items-center justify-start gap-4">
+              <Search className="h-4 w-4" />
+              <p className="min-w-48 text-left lg:min-w-2xs">Search...</p>
+            </div>
 
-          <div className="flex items-center gap-1 text-xs font-medium">
-            <CommandIcon className="h-3 w-3" />
-            <span>K</span>
-          </div>
-        </Button>
+            <div className="flex items-center gap-1 text-xs font-medium">
+              <CommandIcon className="h-3 w-3" />
+              <span>K</span>
+            </div>
+          </Button> : <Button
+              size="icon"
+              variant="ghost"
+              className="rounded-full dark:hover:text-gray-500 dark:text-white hover:text-gray-500 text-gray-700"
+            >
+              <Search className="h-4 w-4" /> 
+          </Button>
+        }
       </DialogTrigger>
 
       <DialogContent className="overflow-hidden p-0 sm:max-w-md" showCloseButton={false}>

@@ -13,7 +13,7 @@ import { Mail, Briefcase, CopyIcon } from "lucide-react"
 import { FaLinkedin } from "react-icons/fa"
 import { SiUpwork } from "react-icons/si"
 
-export default function HireMeDialog() {
+export default function HireMeDialog({ children }: { children?: React.ReactNode }) {
   const onCopyEmail = (e: any) => {
     e?.preventDefault()
     e?.stopPropagation()
@@ -25,15 +25,19 @@ export default function HireMeDialog() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="w-full justify-start gap-3 px-4 py-4 dark:hover:text-gray-400 dark:text-white hover:text-gray-500 text-gray-700"
-        >
-          <Briefcase />
-          <span>Hire Me</span>
-        </Button>
+        {
+          !!children
+            ? children
+            : <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              className="w-full justify-start gap-3 px-4 py-4 dark:hover:text-gray-400 dark:text-white hover:text-gray-500 text-gray-700"
+            >
+            <Briefcase />
+            <span>Hire Me</span>
+          </Button>
+        }
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-sm">
