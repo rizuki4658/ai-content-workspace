@@ -11,6 +11,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { motion, AnimatePresence } from 'motion/react'
+import { useSidebar } from "@/contexts/sidebar-context"
 
 export function NavigationMenuItem({ children, title, collapse, path }: {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ export function NavigationMenuItem({ children, title, collapse, path }: {
   collapse: boolean;
   path: string
 }) {
+  const { open, toggleSidebar } = useSidebar()
   const pathname = usePathname()
   const isActive = pathname === path
 
@@ -31,6 +33,7 @@ export function NavigationMenuItem({ children, title, collapse, path }: {
           : "text-muted-foreground hover:text-primary hover:bg-primary/10",
         collapse ? "justify-start px-3" : "justify-center px-0"
       )}
+      onClick={() => toggleSidebar(!open)}
     >
       <AnimatePresence>
         {isActive && (
@@ -83,8 +86,8 @@ export function NavigationMenu({ children, open }: { children: React.ReactNode, 
   return (
     <nav
       className={cn(
-        "flex flex-col transition-all duration-300 py-6 h-full overflow-y-auto overflow-x-hidden",
-        open ? "px-0" : "px-0"
+        "flex flex-col transition-all duration-300 py-6 h-full overflow-y-auto overflow-x-hidden scroll-smooth",
+        open ? "px-6" : "px-4"
       )}
     >
       {children}

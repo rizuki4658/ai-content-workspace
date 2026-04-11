@@ -49,7 +49,7 @@ export default function AppSidebar() {
         open ? "lg:max-w-64" : "lg:max-w-20"
       )}
     >
-      <div className="flex w-full flex-col overflow-hidden">
+      <div className="flex h-full w-full flex-col overflow-hidden">
         <div
           className={cn(
             "h-16 flex items-center transition-all duration-300",
@@ -103,16 +103,18 @@ export default function AppSidebar() {
           </Button>
         </div>
 
-        <div className={`${open ? 'px-6' : 'px-4'}`}>
+        <div className={`flex-1 min-h-0`}>
           <NavigationMenu open={open}>
             <section>
               {Menus.map((group, idx) => (
                 <div key={idx} className={cn("flex flex-col w-full", idx !== 0 && "mt-4")}>
                   
                   {/* Label Group */}
-                  {group.label && !!open && (
+                  {group.label && (
                     <div className={cn(
-                      "mb-2 px-4 h-4 flex items-center"
+                      "mb-2 px-4 h-4 items-center",
+                      "md:flex",
+                      open ? "lg:flex" : "lg:hidden"
                     )}>
                       <span className="text-[8px] font-semibold text-muted-foreground uppercase tracking-widest animate-in fade-in duration-500">
                         {group.label}
@@ -134,7 +136,11 @@ export default function AppSidebar() {
                           !open ? "justify-center" : "justify-start"
                         )}>
                           <Icons name={menu.key} size={open ? 16 : 16} />
-                          {open && <span className="text-sm truncate">{menu.name}</span>}
+                          <span className={cn(
+                            "text-sm truncate",
+                            "md:inline",
+                            open ? "lg:inline" : "lg:hidden"
+                          )}>{menu.name}</span>
                         </div>
                       </NavigationMenuItem>
                     ))}
