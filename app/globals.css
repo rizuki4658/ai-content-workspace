@@ -140,3 +140,10 @@
     }
   }
 }
+
+.recharts-sector,
+.recharts-sector:focus,
+.recharts-wrapper *:focus,
+.recharts-wrapper svg:focus {
+  outline: none !important;
+}

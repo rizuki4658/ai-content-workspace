@@ -1,12 +1,11 @@
-"use client";
-import { usePathname } from "next/navigation";
-
-
-export default function PageTitle({ className }: { className: string }) {
-  const pathname = usePathname()
-  const title = pathname === "/"
-    ? "Dashboard"
-    : pathname.split('/').filter(Boolean).pop()?.replace(/-/g, ' ')
-  
-  return <h1 className={className}>{title}</h1>
+export default function PageTitle({ title, description }: { title: string; description: string | undefined }) {
+  return (
+    <div>
+      <h1 className="text-2xl font-semibold text-gray-700 dark:text-white">{title}</h1>
+      {description
+        ? <p className="text-sm text-muted-foreground">{description}</p>
+        : ''
+      }
+    </div>
+  )
 }
