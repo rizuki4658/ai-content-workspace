@@ -30,4 +30,5 @@ export type ContentItem = {
   targetAudience?: string;
   createdAt: string;
   updatedAt: string;
+  keywords?: string;
 };
