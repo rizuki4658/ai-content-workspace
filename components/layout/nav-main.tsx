@@ -22,6 +22,12 @@ export function NavigationMenuItem({ children, title, collapse, path }: {
   const { open, toggleSidebar } = useSidebar()
   const pathname = usePathname()
   const isActive = pathname === path
+  const onOpen = () => {
+    const widthSreen = window.innerWidth
+    if (widthSreen > 768 && widthSreen < 1024) {
+      toggleSidebar(!open)
+    }
+  }
 
   const content = (
     <Link 
@@ -33,7 +39,7 @@ export function NavigationMenuItem({ children, title, collapse, path }: {
           : "text-muted-foreground hover:text-primary hover:bg-primary/10",
         collapse ? "justify-start px-3" : "justify-center px-0"
       )}
-      onClick={() => toggleSidebar(!open)}
+      onClick={onOpen}
     >
       <AnimatePresence>
         {isActive && (
@@ -42,7 +48,7 @@ export function NavigationMenuItem({ children, title, collapse, path }: {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-primary/10 dark:bg-primary/100 rounded-md z-0"
+            className="absolute inset-0 bg-primary/10 dark:bg-primary/60 rounded-md z-0"
             transition={{
               type: "spring",
               stiffness: 350,

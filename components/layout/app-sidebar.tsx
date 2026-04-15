@@ -60,7 +60,7 @@ export default function AppSidebar() {
           <div
             className="flex items-center"
             onClick={() => {
-              if (!open) toggleSidebar(true) // Buka jika sedang collapsed
+              if (!open) toggleSidebar(true)
             }}
           >
             <img src="/logo/logo3.png" alt="Logo" className="w-12 min-w-12 cursor-pointer" />

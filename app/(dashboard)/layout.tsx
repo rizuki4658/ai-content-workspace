@@ -28,7 +28,6 @@ export default function DashboardLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  console.log(children)
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
       <SidebarProvider>

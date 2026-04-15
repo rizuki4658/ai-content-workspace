@@ -6,12 +6,15 @@ import {
   CardTitle,
   CardContent,
 } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 
-function BaseTemplate({ data }: { data: DashboardContentDistribution[] }) {
+export default function DashboardContentSummaryCard({
+  data
+}: {
+  data: DashboardContentDistribution[]
+}) {
   const sorted = [...data].sort((a, b) => b.value - a.value)
   const top = sorted[0]
-
+  
   return (
     <Card className="rounded-sm">
       <CardHeader>
@@ -19,12 +22,12 @@ function BaseTemplate({ data }: { data: DashboardContentDistribution[] }) {
           Content Types
         </CardTitle>
       </CardHeader>
-
-      <CardContent className="flex h-[260px] flex-col justify-between space-y-4">
+  
+      <CardContent className="flex h-65 flex-col justify-between space-y-4">
         <div className="space-y-4">
           {data.map((item) => {
             const isTop = item.name === top?.name
-
+  
             return (
               <div key={item.name} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
@@ -42,12 +45,12 @@ function BaseTemplate({ data }: { data: DashboardContentDistribution[] }) {
                       </span>
                     ) : null}
                   </div>
-
+  
                   <span className="font-medium text-foreground">
                     {item.value}%
                   </span>
                 </div>
-
+  
                 <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
                   <div
                     className="h-full rounded-full"
@@ -61,7 +64,7 @@ function BaseTemplate({ data }: { data: DashboardContentDistribution[] }) {
             )
           })}
         </div>
-
+  
         <div className="rounded-md bg-muted p-3">
           <p className="text-xs leading-5 text-muted-foreground">
             {top?.name} is currently the dominant content type with {top?.value}% of
@@ -71,42 +74,4 @@ function BaseTemplate({ data }: { data: DashboardContentDistribution[] }) {
       </CardContent>
     </Card>
   )
-}
-
-function SkeletonTemplate() {
-  return (
-    <Card className="rounded-sm">
-      <CardHeader>
-        <CardTitle className="text-base">
-          <Skeleton className="h-6 w-1/4" />
-        </CardTitle>
-      </CardHeader>
-
-      <CardContent className="flex h-[260px] flex-col justify-between space-y-4">
-        <div className="space-y-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <Skeleton className="h-5 w-1/2" />
-                <Skeleton className="h-5 w-10" />
-              </div>
-              <Skeleton className="h-2 w-full rounded-full" />
-            </div>
-          ))}
-        </div>
-
-        <Skeleton className="h-14 w-full rounded-md" />
-      </CardContent>
-    </Card>
-  )
-}
-
-export default function DashboardContentSummaryCard({
-  data,
-  loading,
-}: {
-  data: DashboardContentDistribution[]
-  loading?: boolean
-}) {
-  return loading ? <SkeletonTemplate /> : <BaseTemplate data={data} />
 }

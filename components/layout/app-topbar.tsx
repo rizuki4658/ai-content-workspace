@@ -13,7 +13,7 @@ import { useSidebar } from "@/contexts/sidebar-context"
 export default function AppTopbar() {
   const { open, toggleSidebar } = useSidebar()
   return (
-    <header className={'h-16 md:border-b px-6 sticky top-0 bg-white dark:bg-background z-50'}>
+    <header className={'h-16 md:border-b px-6 sticky top-0 bg-white dark:bg-background z-40'}>
       <div className="max-w-360 w-full h-full mx-auto flex items-center justify-between">
         <div className="md:hidden flex items-center gap-1">
           <img src="/logo/logo3.png" alt="Logo" className="w-8 min-w-8 cursor-pointer" />

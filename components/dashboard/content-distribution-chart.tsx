@@ -58,8 +58,8 @@ export default function DashboardContentDistributionChart({
 }) {
 
   return (
-    <div className="h-65 w-full relative">
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-65 w-full flex items-center justify-center relative">
+      <ResponsiveContainer width={200} height={200}>
         <PieChart>
           <Tooltip content={<CustomTooltip />} />
           <Pie
@@ -75,8 +75,8 @@ export default function DashboardContentDistributionChart({
         </PieChart>
       </ResponsiveContainer>
 
-      <div className="absolute -bottom-1 left-1/2 transform -translate-1/2">
-        <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+      <div className="absolute bottom-4 left-1/2 transform -translate-1/2">
+        <div className="flex w-full flex-wrap justify-center gap-x-4 gap-y-2">
           {data.map((item) => (
             <div 
               key={item.name}

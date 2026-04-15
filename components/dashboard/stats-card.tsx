@@ -9,9 +9,8 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
 
-function BaseTemplate({ data }: { data: DashboardStats}) {
+export default function DashboardStatsCard({ data }: { data: DashboardStats }) {
   const Icon =
     statIconMap[data.icon as keyof typeof statIconMap] || FileText
 
@@ -69,46 +68,4 @@ function BaseTemplate({ data }: { data: DashboardStats}) {
       </CardContent>
     </Card>
   )
-}
-
-function SkeletonTemplate () {
-  return (
-    <Card className="h-full rounded-sm">
-      <CardHeader className="space-y-3">
-        <div className="flex items-center justify-between">
-          <Skeleton className="h-8 w-8" />
-
-          <Skeleton className="h-4 w-1/3" />
-        </div>
-
-        <div>
-          <CardDescription className="text-xs uppercase tracking-wide">
-            <Skeleton className="h-4 w-1/2" />
-          </CardDescription>
-
-          <CardTitle className="mt-2 text-3xl font-bold">
-            <Skeleton className="h-10 w-1/4" />
-          </CardTitle>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-3">
-        {Array.from({ length: 2 }).map((_, i) => (
-          <div
-            key={i}
-            className="flex items-center justify-between text-sm gap-4"
-          >
-            <Skeleton className="w-1/2 h-4" />
-            <Skeleton className="w-1/2 h-4" />
-          </div>
-        ))}
-
-        <Skeleton className="w-full h-10" />
-      </CardContent>
-    </Card>
-  )
-}
-
-export default function DashboardStatsCard({ data, loading }: { data: DashboardStats; loading?: boolean}) {
-  return loading ? <SkeletonTemplate /> : <BaseTemplate data={data} />
 }
