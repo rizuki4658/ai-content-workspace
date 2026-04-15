@@ -1,4 +1,4 @@
-import type { DashboardRecentActivities } from "@/lib/types/dashboard"
+import type { DashboardRecentActivity } from "@/lib/types/dashboard"
 
 import { Activity, Sparkles } from "lucide-react"
 
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 
 import { activityIconMap } from '@/lib/utils/dashboard-icon-maps'
 
-export default function DashboardRecentsActivityCard({ data }: { data: DashboardRecentActivities[] }) {
+export default function DashboardRecentsActivityCard({ data }: { data: DashboardRecentActivity[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>

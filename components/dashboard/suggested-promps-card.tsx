@@ -1,4 +1,4 @@
-import { DashboardSuggestedPrompts } from "@/lib/types/dashboard";
+import { DashboardSuggestedPrompt } from "@/lib/types/dashboard";
 
 import { Sparkles } from "lucide-react";
 
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-export default function DashboardSuggestedPromptsCard({ data }: { data: DashboardSuggestedPrompts[] }) {
+export default function DashboardSuggestedPromptsCard({ data }: { data: DashboardSuggestedPrompt[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>

@@ -1,10 +1,10 @@
 import type {
   DashboardHero,
-  DashboardStats,
-  DashboardRecentContents,
-  DashboardRecentActivities,
-  DashboardQuickActions,
-  DashboardSuggestedPrompts,
+  DashboardStat,
+  DashboardRecentContentItem,
+  DashboardRecentActivity,
+  DashboardQuickAction,
+  DashboardSuggestedPrompt,
   DashboardContentDistribution
 } from "@/lib/types/dashboard"
 
@@ -29,7 +29,7 @@ export const dashboardOverview: DashboardHero = {
   ],
 }
 
-export const dashboardStats: DashboardStats[] = [
+export const dashboardStats: DashboardStat[] = [
   {
     id: "generated",
     title: "Generated Today",
@@ -51,7 +51,7 @@ export const dashboardStats: DashboardStats[] = [
     title: "Drafts",
     value: 12,
     trend: "5 need review",
-    trendType: "warning",
+    trendType: "negative",
     icon: "draft",
 
     details: [
@@ -64,31 +64,31 @@ export const dashboardStats: DashboardStats[] = [
   },
 ]
 
-export const recentContents: DashboardRecentContents[] = [
+export const recentContents: DashboardRecentContentItem[] = [
   {
     id: "1",
     title: "AI Startup Blog Ideas",
-    type: "Blog",
-    status: "Draft",
+    type: "blog_idea",
+    status: "draft",
     createdAt: "5 min ago",
   },
   {
     id: "2",
     title: "Instagram Launch Caption",
-    type: "Social",
-    status: "Published",
+    type: "social_media",
+    status: "published",
     createdAt: "2h ago",
   },
   {
     id: "3",
     title: "Welcome Email Campaign",
-    type: "Email",
-    status: "Draft",
+    type: "email",
+    status: "draft",
     createdAt: "Yesterday",
   },
 ]
 
-export const recentActivities: DashboardRecentActivities[] = [
+export const recentActivities: DashboardRecentActivity[] = [
   {
     key: 'generated',
     title: "Content Generated",
@@ -109,7 +109,7 @@ export const recentActivities: DashboardRecentActivities[] = [
   },
 ]
 
-export const quickActions: DashboardQuickActions[] = [
+export const quickActions: DashboardQuickAction[] = [
   {
     id: "1",
     title: "Generate Blog",
@@ -133,7 +133,7 @@ export const quickActions: DashboardQuickActions[] = [
   },
 ]
 
-export const suggestedPrompts: DashboardSuggestedPrompts[] = [
+export const suggestedPrompts: DashboardSuggestedPrompt[] = [
   {
     id: "1",
     title: "Top 5 AI tools for startups in 2026",

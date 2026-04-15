@@ -1,4 +1,4 @@
-import type { DashboardStats } from "@/lib/types/dashboard"
+import type { DashboardStat } from "@/lib/types/dashboard"
 import { statIconMap } from "@/lib/utils/dashboard-icon-maps"
 
 import { FileText } from "lucide-react"
@@ -10,7 +10,7 @@ import {
   CardContent,
 } from "@/components/ui/card"
 
-export default function DashboardStatsCard({ data }: { data: DashboardStats }) {
+export default function DashboardStatsCard({ data }: { data: DashboardStat }) {
   const Icon =
     statIconMap[data.icon as keyof typeof statIconMap] || FileText
 

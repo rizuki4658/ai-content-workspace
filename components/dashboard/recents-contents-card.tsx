@@ -1,4 +1,4 @@
-import type { DashboardRecentContents } from "@/lib/types/dashboard"
+import type { DashboardRecentContentItem } from "@/lib/types/dashboard"
 
 import { FileText } from "lucide-react"
 
@@ -12,7 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 
-export default function DashboardRecentsContentsCard({ data }: { data: DashboardRecentContents[] }) {
+export default function DashboardRecentsContentsCard({ data }: { data: DashboardRecentContentItem[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>
@@ -58,7 +58,7 @@ export default function DashboardRecentsContentsCard({ data }: { data: Dashboard
 
             <Badge
               variant={
-                content.status === "Published" ? "default" : "secondary"
+                content.status === "published" ? "default" : "secondary"
               }
             >
               {content.status}

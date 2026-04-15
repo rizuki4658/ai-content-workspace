@@ -1,4 +1,4 @@
-import { DashboardQuickActions } from "@/lib/types/dashboard";
+import type { DashboardQuickAction } from "@/lib/types/dashboard";
 
 import { Zap, FilePenLine } from "lucide-react";
 
@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 
 import { quickActionIconMap } from "@/lib/utils/dashboard-icon-maps"
 
-export default function DashboardQuickActionsCard({ data }: { data: DashboardQuickActions[] }) {
+export default function DashboardQuickActionsCard({ data }: { data: DashboardQuickAction[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>
