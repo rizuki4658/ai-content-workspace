@@ -74,7 +74,7 @@ export default function DashboardContentDistributionChart({
         </PieChart>
       </ResponsiveContainer>
 
-      <div className="absolute bottom-4 left-1/2 transform -translate-1/2">
+      <div className="absolute bottom-4 left-0 right-0">
         <div className="flex w-full flex-wrap justify-center gap-x-4 gap-y-2">
           {data.map((item) => (
             <div 
