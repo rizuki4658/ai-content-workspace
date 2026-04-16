@@ -4,7 +4,9 @@ import { toast } from "sonner"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { generateContentFormSchema, type GenerateContentFormValues } from "@/lib/validations/contents"
+// import { generateContent } from "@/lib/api/generate-content"
 import { generateContent } from "@/lib/server/generate"
+import { ideaTypes, ideaTones } from "@/lib/data/generate"
 import { useGenerateContent } from "@/contexts/generate-context"
 
 import {
@@ -30,7 +32,7 @@ import {
   FieldError,
   FieldLabel,
 } from "@/components/ui/field"
-import { Globe, RefreshCcw } from "lucide-react"
+import { Globe, RefreshCcw, Wand2 } from "lucide-react"
 
 const defaultValues: GenerateContentFormValues = {
   type: "blog_idea",
@@ -42,7 +44,7 @@ const defaultValues: GenerateContentFormValues = {
 }
 
 export default function GenerateFormCard() {
-  const { setContent } = useGenerateContent()
+  const { content, setContent } = useGenerateContent()
   const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<GenerateContentFormValues>({
     resolver: zodResolver(generateContentFormSchema),
     defaultValues,
@@ -50,6 +52,10 @@ export default function GenerateFormCard() {
   })
 
   const onSubmit = async (values: GenerateContentFormValues) => {
+    setContent({
+      data: null,
+      isLoading: true
+    })
     try {
       const result = await generateContent(values)
 
@@ -58,7 +64,10 @@ export default function GenerateFormCard() {
         position: "top-center"
       })
 
-      setContent(result)
+      setContent({
+        data: result,
+        isLoading: false
+      })
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "Failed to generate content.",
@@ -67,20 +76,27 @@ export default function GenerateFormCard() {
           position: "top-center",
         }
       )
-      setContent(null)
+      setContent({
+        data: null,
+        isLoading: false
+      })
     }
   }
 
   const onClear = () => {
     reset(defaultValues)
-    setContent(null)
     toast.info("Form has been cleared.", { position: "top-center", duration: 1000 })
   }
 
   return (
     <Card className="rounded-sm">
       <CardHeader className="mb-4">
-        <CardTitle>Generate Content</CardTitle>
+        <CardTitle>
+          <div className="flex items-center gap-2">
+            <Wand2 className="h-4 w-4 text-primary" />
+            Generate Content
+          </div>
+        </CardTitle>
         <CardDescription className="text-xs">
           Fill in the details below to generate AI-powered content.
         </CardDescription>
@@ -107,11 +123,11 @@ export default function GenerateFormCard() {
                     <SelectValue placeholder="Select content type" />
                   </SelectTrigger>
                   <SelectContent position="popper" className="rounded-sm">
-                    <SelectItem value="blog_idea">Blog Idea</SelectItem>
-                    <SelectItem value="caption">Caption</SelectItem>
-                    <SelectItem value="email">Email</SelectItem>
-                    <SelectItem value="product_description">Product Description</SelectItem>
-                    <SelectItem value="social_media">Social Media</SelectItem>
+                    {(Object.keys(ideaTypes) as Array<keyof typeof ideaTypes>).map((key) => (
+                      <SelectItem key={key} value={key}>
+                        {ideaTypes[key]}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 { fieldState.invalid && <FieldError className="text-xs" errors={[fieldState.error]} /> }
@@ -176,10 +192,11 @@ export default function GenerateFormCard() {
                       <SelectValue placeholder="Select tone" />
                     </SelectTrigger>
                     <SelectContent position="popper" className="rounded-sm">
-                      <SelectItem value="professional">Professional</SelectItem>
-                      <SelectItem value="casual">Casual</SelectItem>
-                      <SelectItem value="friendly">Friendly</SelectItem>
-                      <SelectItem value="persuasive">Persuasive</SelectItem>
+                      {(Object.keys(ideaTones) as Array<keyof typeof ideaTones>).map((key) => (
+                        <SelectItem key={key} value={key}>
+                          {ideaTones[key]}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   { fieldState.invalid && <FieldError className="text-xs" errors={[fieldState.error]} /> }
@@ -228,10 +245,10 @@ export default function GenerateFormCard() {
           {/* Actions */}
           <div className="flex w-full items-center gap-3 pt-2">
             <Button
-              className={`flex-1 ${isSubmitting ? "bg-muted-foreground cursor-not-allowed" : "hover:opacity-100 focus:opacity-100 opacity-80"} rounded-sm`}
+              className={`flex-1 ${isSubmitting || !!content?.data?.output ? "bg-muted-foreground cursor-not-allowed" : "hover:opacity-100 focus:opacity-100 opacity-80"} rounded-sm`}
               size="lg"
               type="submit"
-              disabled={isSubmitting}>
+              disabled={isSubmitting || !!content?.data?.output}>
               <Globe />
               Generate Content
             </Button>
