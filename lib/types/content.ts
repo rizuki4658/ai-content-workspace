@@ -32,3 +32,11 @@ export type ContentItem = {
   updatedAt: string;
   keywords?: string;
 };
+
+export type PromptSuggestionItem = {
+  id: string | number;
+  label: string;
+  prompt: string;
+  type: ContentType;
+  tone?: ContentTone;
+}

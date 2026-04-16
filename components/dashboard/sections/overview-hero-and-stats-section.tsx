@@ -13,18 +13,20 @@ export default async function DashboardOverviewHeroStatsSection() {
   ])
 
   return (
-    <div className="grid gap-6 lg:grid-cols-7">
+    <div className="grid gap-6 lg:grid-cols-6">
       <div className="lg:col-span-3">
         <DashboardOverviewHeroCard data={overview} />
       </div>
 
-      {stats.map((stat) => {
-        return (
-          <div key={stat.id} className="lg:col-span-2">
-            <DashboardStatsCard data={stat} />
-          </div>
-        )
-      })}
+      <div className="lg:col-span-3 grid grid-cols-2 gap-6">
+        {stats.map((stat) => {
+          return (
+            <div key={stat.id} className="lg:col-span-1">
+              <DashboardStatsCard data={stat} />
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }

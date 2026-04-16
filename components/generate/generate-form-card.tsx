@@ -1,11 +1,11 @@
 "use client"
 
+import { useEffect } from "react"
 import { toast } from "sonner"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { generateContentFormSchema, type GenerateContentFormValues } from "@/lib/validations/contents"
-// import { generateContent } from "@/lib/api/generate-content"
-import { generateContent } from "@/lib/server/generate"
+import { generateContent } from "@/lib/api/generate-content"
 import { ideaTypes, ideaTones } from "@/lib/data/generate"
 import { useGenerateContent } from "@/contexts/generate-context"
 
@@ -51,8 +51,22 @@ export default function GenerateFormCard() {
     mode: "onSubmit"
   })
 
+  useEffect(() => {
+    if (content.form) {
+      reset({
+        type: content.form.type || "blog_idea",
+        title: content.form.title || "",
+        prompt: content.form.prompt || "",
+        tone: content.form.tone || "professional",
+        targetAudience: "",
+        keywords: ""
+      })
+    }
+  }, [content.form?.uniqueId, reset])
+
   const onSubmit = async (values: GenerateContentFormValues) => {
     setContent({
+      ...content,
       data: null,
       isLoading: true
     })
@@ -65,6 +79,7 @@ export default function GenerateFormCard() {
       })
 
       setContent({
+        ...content,
         data: result,
         isLoading: false
       })
@@ -77,6 +92,7 @@ export default function GenerateFormCard() {
         }
       )
       setContent({
+        ...content,
         data: null,
         isLoading: false
       })

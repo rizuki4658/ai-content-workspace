@@ -1,5 +1,6 @@
 import type { ContentItem, ContentStatus } from "@/lib/types/content"
 import type { GenerateContentFormValues } from "@/lib/validations/contents"
+import { writingTips, promptSuggestions } from "@/lib/data/generate"
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -48,3 +49,14 @@ export async function generateContent(
     "updatedAt": "2026-04-16T13:02:03.129Z"
   }
 }
+
+export async function fetchSuggestedPrompts() {
+  await wait(1400)
+  return promptSuggestions
+}
+
+export async function fetchWriteTips() {
+  await wait(1900)
+  return writingTips
+}
+

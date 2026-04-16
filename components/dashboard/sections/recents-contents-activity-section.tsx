@@ -10,7 +10,7 @@ export default async function DashboardRecentsContentsActivitySection() {
   ])
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid grid-flow-dense gap-6 md:grid-cols-2">
       <DashboardRecentsContentsCard data={contents} />
       <DashboardRecentsActivityCard data={activities} />
     </div>

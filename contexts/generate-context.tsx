@@ -2,10 +2,17 @@
 
 import * as React from "react"
 
-import type { ContentItem } from "@/lib/types/content"
+import type { ContentItem, ContentTone, ContentType } from "@/lib/types/content"
 
 type ContentItemContext = {
   data: ContentItem | null,
+  form?: {
+    uniqueId?: string | number;
+    title: string;
+    tone?: ContentTone;
+    type: ContentType;
+    prompt: string;
+  },
   isLoading: Boolean
 }
 
@@ -25,7 +32,14 @@ export function useGenerateContent() {
 export function GenerateContentProvider({ children }: { children: React.ReactNode }) {
   const [content, setContent] = React.useState<ContentItemContext>({
     data: null,
-    isLoading: false
+    isLoading: false,
+    form: {
+      uniqueId: '',
+      title: '',
+      tone: "professional",
+      type: "blog_idea",
+      prompt: ''
+    }
   })
 
   return (

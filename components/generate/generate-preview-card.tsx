@@ -98,6 +98,7 @@ export default function GeneratePreviewCard() {
           ...content.data,
           output: updatedContent
         },
+        ...(!!content?.form && {form: { ...content.form }}),
         isLoading: false
       })
     }
@@ -123,12 +124,14 @@ export default function GeneratePreviewCard() {
     if (isChanged) {
       setShowDiscardDialog(true)
     } else setContent({
+      ...(!!content?.form && {form: { ...content.form }}),
       data: null,
       isLoading: false
     })
   }
   const onConfirmDiscard = () => {
     setContent({
+      ...(!!content?.form && {form: { ...content.form }}),
       data: null,
       isLoading: false
     })

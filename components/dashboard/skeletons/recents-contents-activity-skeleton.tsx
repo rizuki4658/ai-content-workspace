@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 
 export default function DashboardRecentsContentsActivitySkeleton() {
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid grid-flow-dense gap-6 md:grid-cols-2">
       <Card className="rounded-sm">
         <CardHeader>
           <div className="flex items-center justify-between gap-4">

@@ -17,7 +17,7 @@ interface LoadingTemplateProps {
 
 function EmptyTemplate() {
   return (
-    <CardContent className="flex flex-col items-center justify-center h-full gap-2">
+    <CardContent className="flex flex-col items-center justify-center min-h-100 h-full gap-2">
       <SiOpenai size={56} className="opacity-10" />
       <div className="text-center max-w-xs space-y-1">
         <p className="text-muted-foreground/50">No content generated yet</p>
