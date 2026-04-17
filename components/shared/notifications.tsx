@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useState } from "react"
 import { notifications as notificationsData } from "@/lib/data/notifications"
-import type { Notification } from "@/lib/data/notifications"
+import type { Notification } from "@/lib/types/notifications"
 import { formatDate } from "@/lib/utils/date-format"
 
 import {
