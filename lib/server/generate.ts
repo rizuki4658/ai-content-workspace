@@ -36,7 +36,7 @@ export async function generateContent(
   const status: ContentStatus = "ready"
 
   return {
-    "id": crypto.randomUUID(),
+    "id": `${crypto.randomUUID()}-${Math.random()}`,
     "title": "Ikon dan Marc Marquez",
     "type": "blog_idea",
     "prompt": "buatkan artikel tentang kegiatan ikon dan marc marquez",
