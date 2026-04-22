@@ -13,7 +13,7 @@ function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export async function getContents(params: { search?: string } = {}): Promise<GetContentResponse> {
+export async function getContents(params: { search?: string; limit?: number; page?: number; } = {}): Promise<GetContentResponse> {
   const queryUrl = new URLSearchParams()
   if (params.search) {
     queryUrl.append("search", params.search)

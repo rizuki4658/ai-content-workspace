@@ -18,7 +18,7 @@ export default async function DashboardOverviewHeroStatsSection() {
         <DashboardOverviewHeroCard data={overview} />
       </div>
 
-      <div className="lg:col-span-3 grid grid-cols-2 gap-6">
+      <div className="lg:col-span-3 grid md:grid-cols-2 gap-6">
         {stats.map((stat) => {
           return (
             <div key={stat.id} className="lg:col-span-1">

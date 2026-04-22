@@ -43,7 +43,7 @@ export default function AppMobileNavbar() {
   if (!mounted) return null
 
   return (
-    <div className="fixed bg-white dark:bg-background bottom-0 left-0 right-0 h-16 px-6 md:hidden border-t">
+    <div className="fixed bg-white dark:bg-background -bottom-1 left-0 right-0 h-16 px-6 md:hidden border-t">
       <NavigationMenuMobile>
         <section className="h-full">
           <NavigationMenuContentMobile>

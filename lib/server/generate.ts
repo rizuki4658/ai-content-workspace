@@ -1,6 +1,7 @@
 import type { ContentItem, ContentStatus } from "@/lib/types/content"
 import type { GenerateContentFormValues } from "@/lib/validations/contents"
 import { writingTips, promptSuggestions } from "@/lib/data/generate"
+import { generateId } from "@/lib/utils/generator-id"
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
@@ -36,7 +37,7 @@ export async function generateContent(
   const status: ContentStatus = "ready"
 
   return {
-    "id": `${crypto.randomUUID()}-${Math.random()}`,
+    "id": `${generateId()}-${Math.random()}`,
     "title": "Ikon dan Marc Marquez",
     "type": "blog_idea",
     "prompt": "buatkan artikel tentang kegiatan ikon dan marc marquez",

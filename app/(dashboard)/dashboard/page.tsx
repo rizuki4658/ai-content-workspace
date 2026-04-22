@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <section className="space-y-6">
-      <PageTitle title="Dashboard" description="Overview of your content performance and workspace activity" />
+      <PageTitle title="Dashboard" description="Overview of your content performance and workspace activity." />
 
       <Suspense fallback={<DashboardOverviewHeroStatsSkeleton />}>
         <div className="animate-in fade-in duration-500">

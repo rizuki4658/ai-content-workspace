@@ -1,6 +1,8 @@
 import type { GenerateContentFormValues } from "@/lib/validations/contents"
 import type { ContentItem } from "@/lib/types/content"
 
+import { generateId } from "@/lib/utils/generator-id"
+
 type GenerateApiResponse = {
   title: string;
   type: ContentItem["type"];
@@ -31,7 +33,7 @@ export async function generateContent(
   const now = new Date().toISOString()
 
   return {
-    id: crypto.randomUUID(),
+    id: generateId(),
     title: result.title,
     type: result.type,
     prompt: values.prompt,

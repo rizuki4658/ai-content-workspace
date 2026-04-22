@@ -20,24 +20,9 @@ import {
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ideaTypes, ideaTones } from "@/lib/data/generate"
-import { toast } from "sonner";
-
-export const contentTypeColorMap = {
-  blog_idea: "bg-purple-500/10 text-purple-500 border-purple-500/20",
-  caption: "bg-pink-500/10 text-pink-500 border-pink-500/20",
-  email: "bg-blue-500/10 text-blue-500 border-blue-500/20",
-  product_description: "bg-orange-500/10 text-orange-500 border-orange-500/20",
-  social_media: "bg-green-500/10 text-green-500 border-green-500/20",
-}
-
-export const contentToneColorMap = {
-  professional: "text-slate-600",
-  casual: "text-yellow-600",
-  friendly: "text-emerald-600",
-  persuasive: "text-red-500",
-  bold: "text-indigo-500",
-  default: ""
-}
+import { toast } from "sonner"
+import { contentTypeColorMap, contentToneColorMap } from "@/lib/data/contents"
+import { generateId } from "@/lib/utils/generator-id"
 
 export default function GenerateSuggestedPromptsCard({ data }: { data: PromptSuggestionItem[] }) {
   const { content, setContent } = useGenerateContent()
@@ -47,7 +32,7 @@ export default function GenerateSuggestedPromptsCard({ data }: { data: PromptSug
       setContent({
         ...content,
         form: {
-          uniqueId: crypto.randomUUID(),
+          uniqueId: generateId(),
           title: e.label || '',
           tone: e.tone || undefined,
           type: e.type || '',
@@ -75,7 +60,7 @@ export default function GenerateSuggestedPromptsCard({ data }: { data: PromptSug
         </div>
       </CardHeader>
 
-      <CardContent className="space-y-3 h-150">
+      <CardContent className="space-y-3 h-150 overflow-y-auto">
         {data.map((prompt) => (
           <div
             key={prompt.id}
