@@ -1,5 +1,5 @@
 import { ContentItem, ContentStatus } from "@/lib/types/content"
-import { EllipsisVertical } from "lucide-react"
+import { Archive, ArchiveRestore, BookmarkCheck, CircleCheck, EllipsisVertical, Eye, Globe, Pencil, Trash2 } from "lucide-react"
 
 import {
   DropdownMenu,
@@ -49,11 +49,38 @@ export default function ContentsActions({
             <ContentsActionTrigger />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40" align={align}>
-          <DropdownMenuItem onClick={() => onView && onView(item)}>View</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onEdit && onEdit(item)}>Edit</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onReady && onReady(item)}>Mark as Ready</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onDelete && onDelete(item)}>Delete</DropdownMenuItem>
+        <DropdownMenuContent
+          className="w-40 py-2 px-1"
+          align={align}>
+          <DropdownMenuItem
+            onClick={() => onView && onView(item)}>
+            <div className="flex items-center gap-2">
+              <Eye />
+              <p>View</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onEdit && onEdit(item)}>
+            <div className="flex items-center gap-2">
+              <Pencil />
+              <p>Edit</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onReady && onReady(item)}>
+            <div className="flex items-center gap-2">
+              <CircleCheck />
+              <p>Mark as Ready</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => onDelete && onDelete(item)}>
+            <div className="flex items-center gap-2">
+              <Trash2 />
+              <p>Delete</p>
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     )
@@ -67,12 +94,45 @@ export default function ContentsActions({
             <ContentsActionTrigger />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40" align={align}>
-          <DropdownMenuItem onClick={() => onView && onView(item)}>View</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onEdit && onEdit(item)}>Edit</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onPublish && onPublish}>Publish</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onArchived && onArchived(item)}>Archived</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onDelete && onDelete(item)}>Delete</DropdownMenuItem>
+        <DropdownMenuContent
+          className="w-40 py-2 px-1"
+          align={align}>
+          <DropdownMenuItem
+            onClick={() => onView && onView(item)}>
+            <div className="flex items-center gap-2">
+              <Eye />
+              <p>View</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onEdit && onEdit(item)}>
+            <div className="flex items-center gap-2">
+              <Pencil />
+              <p>Edit</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onPublish && onPublish(item)}>
+            <div className="flex items-center gap-2">
+              <Globe />
+              <p>Publish</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onArchived && onArchived(item)}>
+            <div className="flex items-center gap-2">
+              <Archive />
+              <p>Archived</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => onDelete && onDelete(item)}>
+            <div className="flex items-center gap-2">
+              <Trash2 />
+              <p>Delete</p>
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     )
@@ -86,10 +146,32 @@ export default function ContentsActions({
             <ContentsActionTrigger />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40" align={align}>
-          <DropdownMenuItem onClick={() => onView && onView(item)}>View</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onArchived && onArchived(item)}>Archived</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onDelete && onDelete(item)}>Delete</DropdownMenuItem>
+
+        <DropdownMenuContent
+          className="w-40 py-2 px-1"
+          align={align}>
+          <DropdownMenuItem
+            onClick={() => onView && onView(item)}>
+            <div className="flex items-center gap-2">
+              <Eye />
+              <p>View</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onArchived && onArchived(item)}>
+            <div className="flex items-center gap-2">
+              <Archive />
+              <p>Archived</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => onDelete && onDelete(item)}>
+            <div className="flex items-center gap-2">
+              <Trash2 />
+              <p>Delete</p>
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     )
@@ -103,10 +185,32 @@ export default function ContentsActions({
             <ContentsActionTrigger />
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-40" align={align}>
-          <DropdownMenuItem onClick={() => onView && onView(item)}>View</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onRestore && onRestore(item)}>Restore Default</DropdownMenuItem>
-          <DropdownMenuItem onClick={() => onDelete && onDelete(item)}>Delete</DropdownMenuItem>
+
+        <DropdownMenuContent
+          className="w-40 py-2 px-1"
+          align={align}>
+          <DropdownMenuItem
+            onClick={() => onView && onView(item)}>
+            <div className="flex items-center gap-2">
+              <Eye />
+              <p>View</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => onRestore && onRestore(item)}>
+            <div className="flex items-center gap-2">
+              <ArchiveRestore />
+              <p>Restore Default</p>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => onDelete && onDelete(item)}>
+            <div className="flex items-center gap-2">
+              <Trash2 />
+              <p>Delete</p>
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     )

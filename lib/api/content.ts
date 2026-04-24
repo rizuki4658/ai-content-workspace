@@ -1,4 +1,4 @@
-import type { ContentItem, ContentStatus } from "@/lib/types/content"
+import type { ContentFilter, ContentItem, ContentStatus, ContentType } from "@/lib/types/content"
 import {
   getStoredContents,
   getPaginatedContents,
@@ -8,30 +8,34 @@ import {
   GetContentResponse
 } from "@/lib/storage/content"
 import { toast } from "sonner"
+import { getExcerpt } from "@/components/contents/contents-helper"
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
-export async function getContents(params: { search?: string; limit?: number; page?: number; } = {}): Promise<GetContentResponse> {
-  const queryUrl = new URLSearchParams()
-  if (params.search) {
-    queryUrl.append("search", params.search)
-  }
+export async function getContents(params: ContentFilter = {}): Promise<GetContentResponse> {
 
   try {
-    const page = parseInt(queryUrl.get("page") || "1")
-    const limit = parseInt(queryUrl.get("limit") || "10")
-    const query = queryUrl.get('search')
+    const page = params.page || 1
+    const limit = params.limit || 1
+    const query = params.search || ''
+    const type = params.type || ''
+    const status = params.status || ''
+    const sortBy = params.by || ''
 
-    const response = limit || query ? getPaginatedContents(page, limit) : getStoredContents()
-
-    const result = response
-    result.data = query ? response.data.filter(item => item.title.toLowerCase().includes(query?.toLowerCase())) : response.data
+    const response = limit || query || type || status || sortBy ? getPaginatedContents({
+      query,
+      page,
+      limit,
+      type,
+      status,
+      sortBy
+    }) : getStoredContents()
 
     await wait(1500)
 
-    return result
+    return response
   } catch (error) {
     return { data: [] }
   }
@@ -49,5 +53,39 @@ export async function saveContent({
     })
   } catch (error) {
     return toast.error(`Unable to save content. Please try again.!`, { position: 'top-center' })
+  }
+}
+
+export async function setFavorite(id: string, item: ContentItem) {
+  try {
+    await wait(500)
+    upsertContentItem(id, item)
+    
+    const actionLabel = item.favorite ? 'added to favorites' : 'removed from favorites'
+    
+    return toast.success(`"${getExcerpt(item.title, 40)}" ${actionLabel}`, {
+      position: 'top-center',
+      duration: 1000
+    })
+  } catch (error) {
+    return toast.error("Something went wrong. Please try again.", { 
+      position: 'top-center' 
+    })
+  }
+}
+
+export async function editContent(id: string, item: ContentItem) {
+  try {
+    await wait(500)
+    upsertContentItem(id, item)
+    
+    return toast.success(`"${getExcerpt(item.title, 40)}" was updated!`, {
+      position: 'top-center',
+      duration: 1000
+    })
+  } catch (error) {
+    return toast.error("Something went wrong. Please try again.", { 
+      position: 'top-center' 
+    })
   }
 }

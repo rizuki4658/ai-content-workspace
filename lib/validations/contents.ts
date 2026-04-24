@@ -16,6 +16,14 @@ export const contentToneSchema = z.enum([
   "bold",
 ])
 
+
+export const contentStatusSchema = z.enum([
+  "draft",
+  "ready",
+  "published",
+  "archived"
+])
+
 export const generateContentFormSchema = z.object({
   type: contentTypeSchema,
   title: z
@@ -43,6 +51,23 @@ export const generateContentFormSchema = z.object({
     .or(z.literal("")),
 })
 
+export const contentsEditFormSchema = z.object({
+  title: z
+    .string()
+    .trim()
+    .min(3, "Title must be at least 3 characters.")
+    .max(100, "Title must be less than 100 characters."),
+  output: z
+    .string()
+    .trim()
+    .min(100, "Content must be at least 100 characters."),
+  status: contentStatusSchema
+})
+
 export type GenerateContentFormValues = z.infer<
   typeof generateContentFormSchema
+>
+
+export type ContentsEditFormValues = z.infer<
+  typeof contentsEditFormSchema
 >

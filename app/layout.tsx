@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "sonner"
+import QueryProvider from "@/providers/query-provider"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +32,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <TooltipProvider>
-          {children}
+          <QueryProvider>
+            {children}
+          </QueryProvider>
         </TooltipProvider>
         <Toaster />
       </body>

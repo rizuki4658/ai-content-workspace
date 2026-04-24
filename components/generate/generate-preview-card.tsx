@@ -234,7 +234,7 @@ export default function GeneratePreviewCard() {
           </div>
 
           <div className="flex justify-end gap-2 border-t pt-4">
-             <Button variant="outline" size="lg" onClick={onBlurEditor}>Close</Button>
+            <Button variant="outline" size="lg" onClick={onBlurEditor}>Close</Button>
           </div>
         </DialogContent>
       </Dialog>

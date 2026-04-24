@@ -10,7 +10,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 export default function GenerateSuggestTipsSkeleton() {
   return (
     <div className="grid gap-6 grid-cols-6">
-      <Card className="rounded-sm h-150 lg:col-span-4 md:col-span-2 col-span-6">
+      <Card className="rounded-sm h-150 lg:col-span-4 md:col-span-3 col-span-6">
         <CardHeader>
           <div className="space-y-1">
             <div className="flex items-center gap-2 w-full">
@@ -49,7 +49,7 @@ export default function GenerateSuggestTipsSkeleton() {
         </CardContent>
       </Card>
 
-      <Card className="rounded-sm lg:col-span-2 md:col-span-2 col-span-6">
+      <Card className="rounded-sm lg:col-span-2 md:col-span-3 col-span-6">
         <CardHeader>
           <div className="space-y-2">
             <div className="flex items-center gap-2">

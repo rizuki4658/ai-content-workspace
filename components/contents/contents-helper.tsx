@@ -36,9 +36,9 @@ export const contentStatusIconMap = {
   archived: Archive,
 }
 
-export function renderIconStatus(status: keyof typeof contentStatusIconMap) {
+export function renderIconStatus(status: keyof typeof contentStatusIconMap, className?: string) {
   const Icon = contentStatusIconMap[status]
-  return <Icon />
+  return className ? <Icon className={className} /> : <Icon />
 }
 
 export function renderBadge({

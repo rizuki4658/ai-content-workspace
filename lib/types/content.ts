@@ -40,3 +40,12 @@ export type PromptSuggestionItem = {
   type: ContentType;
   tone?: ContentTone;
 }
+
+export type ContentFilter = {
+  search?: string;
+  limit?: number;
+  page?: number;
+  status?: ContentStatus | "all";
+  type?: ContentType | "all";
+  by?: string
+}

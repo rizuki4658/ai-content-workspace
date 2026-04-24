@@ -1,3 +1,8 @@
+"use client"
+
+import { useState } from "react"
+import Link from "next/link"
+
 import type { ContentItem } from "@/lib/types/content"
 import { relativeDate } from '@/lib/utils/date-format'
 
@@ -15,16 +20,31 @@ import {
   TableCell
 } from '@/components/ui/table'
 import { Button } from "@/components/ui/button"
-import { Star } from "lucide-react";
+import { ServerOff, Star } from "lucide-react";
 import ContentsActions from "./contents-actions"
+import ContentsView from "@/components/contents/contents-view"
+import ContentsEdit from "@/components/contents/contents-edit"
 
 export default function ContentsTable({
   headers,
   data,
+  onFavorite,
+  onEditContent
 }: {
   headers: { name: string; key: keyof ContentItem }[],
-  data: ContentItem[]
+  data: ContentItem[];
+  onFavorite: (item: ContentItem) => void;
+  onEditContent?: (item: ContentItem) => void | Promise<void>
 }) {
+  const [content, setContent] = useState<{
+    openView: boolean;
+    openEdit: boolean;
+    item: ContentItem | undefined
+  }>({
+    openView: false,
+    openEdit: false,
+    item: undefined
+  })
   const renderCellValue = (item: ContentItem, key: keyof ContentItem) => {
     const value = item[key]
 
@@ -32,7 +52,9 @@ export default function ContentsTable({
       case 'title':
         return (
           <div className="flex items-start gap-2">
-            <Button variant="ghost" size="icon-sm" className="w-auto h-auto leading-0">
+            <Button
+              variant="ghost" size="icon-sm" className="w-auto h-auto leading-0"
+              onClick={() => onFavorite(item) }>
               <div className={item.favorite ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}>
                 <Star fill={item.favorite ? 'currentColor' : 'none'} color="currentColor" />
               </div>
@@ -60,10 +82,38 @@ export default function ContentsTable({
     }
   }
 
+  const onView = (item: ContentItem, key: "openView" | "openEdit") => {
+    setContent({
+      openView: key === "openView",
+      openEdit: key === "openEdit",
+      item
+    })
+  }
+  
+  const onEdit = async (item: ContentItem) => {
+    await onEditContent?.(item)
+
+    setContent({
+      openView: false,
+      openEdit: false,
+      item: undefined
+    })
+  }
+  
+  const onReady = () => {}
+  
+  const onDelete = () => {}
+  
+  const onRestore = () => {}
+  
+  const onArchived = () => {}
+  
+  const onPublish = () => {}
+
   return (
     <div className="hidden md:block overflow-hidden rounded-md border">
       <Table>
-        <TableHeader>
+        {data.length ? <TableHeader>
           <TableRow>
             {headers.map((header) => (
               <TableHead key={header.key}>
@@ -74,9 +124,9 @@ export default function ContentsTable({
             ))}
             <TableHead></TableHead>
           </TableRow>
-        </TableHeader>
+        </TableHeader> : null}
         <TableBody>
-          {data.map((d, n) => (
+          {data.length ? data?.map((d, n) => (
             <TableRow key={`${d.id}_${n}`}>
               {headers.map((header) => (
                 <TableCell
@@ -90,12 +140,57 @@ export default function ContentsTable({
                   item={d}
                   variant={d.status}
                   align="end"
+                  onView={() => onView(d, 'openView')}
+                  onEdit={() => onView(d, 'openEdit')}
+                  onReady={onReady}
+                  onDelete={onDelete}
+                  onRestore={onRestore}
+                  onArchived={onArchived}
+                  onPublish={onPublish}
                 />
               </TableCell>
             </TableRow>
-          ))}
+          )) : <TableCell>
+            <div className="flex flex-col h-80 justify-center items-center text-center p-6 border-2 border-dashed rounded-xl border-muted/20">
+              <div className="bg-muted/10 p-6 rounded-full mb-4">
+                <ServerOff className="w-12 h-12 text-muted-foreground/60" />
+              </div>
+              <h3 className="text-xl font-semibold text-muted-foreground">No content found</h3>
+              <p className="text-muted-foreground mt-2 mb-6 whitespace-normal max-w-96 w-full">
+                Your workspace is empty. Start generating AI content to see them listed here.
+              </p>
+              <Button asChild variant="outline" size="sm" className="rounded-full">
+                <Link href="/generate">
+                  Generate First Content
+                </Link>
+              </Button>
+            </div>
+          </TableCell> }
         </TableBody>
       </Table>
+      {data.length ?
+        <>
+          <ContentsView
+            open={content.openView}
+            item={content.item}
+            onClose={() => setContent({
+              openView: false,
+              openEdit: false,
+              item: undefined
+            })}
+          />
+          <ContentsEdit
+            open={content.openEdit}
+            item={content.item}
+            onSave={onEdit}
+            onClose={() => setContent({
+              openView: false,
+              openEdit: false,
+              item: undefined
+            })}
+          />
+        </> : null
+      }
     </div>
   )
 }

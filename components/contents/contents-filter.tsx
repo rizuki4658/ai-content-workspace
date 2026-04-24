@@ -1,4 +1,4 @@
-import type { ContentStatus, ContentType } from "@/lib/types/content"
+import type { ContentStatus, ContentType, ContentFilter } from "@/lib/types/content"
 
 import {
   InputGroup,
@@ -21,17 +21,30 @@ import {
 
 export default function ContentsFilter({
   value,
-  status,
   types,
+  status,
   onChange,
   onClear
 }: {
-  status: Record<ContentStatus, string>;
   types: Record<ContentType, string>;
-  value?: any;
-  onChange?: () => void;
+  status: Record<ContentStatus, string>;
+  value?: ContentFilter;
+  onChange?: (value: ContentFilter) => void;
   onClear?: () => void;
 }) {
+  const onByChange = (e: string) => {
+    onChange && onChange({...value, by: e})
+  }
+  const onTypeChange = (e: ContentType) => {
+    onChange && onChange({...value, type: e })
+  }
+  const onStatusChange = (e: ContentStatus) => {
+    onChange && onChange({...value, status: e})
+  }
+  const onSearchChange = (e: any) => {
+    onChange && onChange({...value, search: e?.target?.value})
+  }
+
   return (
     <div className="flex flex-col md:justify-between md:flex-row items-center w-full gap-4">
       <div className="flex-1 w-full">
@@ -39,22 +52,29 @@ export default function ContentsFilter({
           <InputGroupAddon>
             <Search />
           </InputGroupAddon>
-          <InputGroupInput placeholder="Search..." />
+          <InputGroupInput
+            value={value?.search}
+            placeholder="Search..."
+            onInput={onSearchChange}
+          />
         </InputGroup>
       </div>
 
       <div className="flex-1 w-full flex items-center justify-end gap-2">
         <div className="grid grid-cols-3 gap-2 w-full flex-1 md:max-w-125">
-          <Select>
+          <Select
+            value={value?.status}
+            onValueChange={onStatusChange}>
             <SelectTrigger
               id="content-status"
               className="w-full rounded-sm">
-              <span className="truncate text-left">
+              <span className={`truncate text-left ${value?.status === 'all' ? 'opacity-50' : ''}`}>
                 <SelectValue placeholder="Status" />
               </span>
             </SelectTrigger>
             <SelectContent position="popper" className="rounded-sm">
               <SelectContent position="popper" className="rounded-sm">
+                <SelectItem value="all" className="opacity-50">Status</SelectItem>
                 {(Object.keys(status) as Array<keyof typeof status>).map((key) => (
                   <SelectItem key={key} value={key}>
                     {status[key]}
@@ -64,15 +84,18 @@ export default function ContentsFilter({
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select
+            value={value?.type}
+            onValueChange={onTypeChange}>
             <SelectTrigger
               id="content-type"
               className="w-full rounded-sm">
-              <span className="truncate text-left">
+              <span className={`truncate text-left ${value?.type === 'all' ? 'opacity-50' : ''}`}>
                 <SelectValue placeholder="Type" />
               </span>
             </SelectTrigger>
             <SelectContent position="popper" className="rounded-sm">
+              <SelectItem value="all" className="opacity-50">Type</SelectItem>
               {(Object.keys(types) as Array<keyof typeof types>).map((key) => (
                 <SelectItem key={key} value={key}>
                   {types[key]}
@@ -81,15 +104,18 @@ export default function ContentsFilter({
             </SelectContent>
           </Select>
 
-          <Select>
+          <Select
+            value={value?.by}
+            onValueChange={onByChange}>
             <SelectTrigger
               id="content-sort"
               className="w-full rounded-sm">
-              <span className="truncate text-left">
+              <span className={`truncate text-left ${value?.by === 'all' ? 'opacity-50' : ''}`}>
                 <SelectValue placeholder="Sort" />
               </span>
             </SelectTrigger>
             <SelectContent position="popper" className="rounded-sm">
+              <SelectItem value="all" className="opacity-50">Sort</SelectItem>
               <SelectItem value="newest">Newest</SelectItem>
               <SelectItem value="oldest">Oldest</SelectItem>
               <SelectItem value="recently_updated">Recently Updated</SelectItem>
@@ -97,14 +123,17 @@ export default function ContentsFilter({
             </SelectContent>
           </Select>
         </div>
-        <div className="w-7">
-          <Button
-            variant="destructive"
-            size="icon-sm"
-            className="text-destructive">
-            <Trash2 />
-          </Button>
-        </div>
+        {value?.search || value?.status && value?.status !== 'all' || value?.type && value?.type !== 'all' || value?.by && value?.by !== 'all' ?
+          <div className="w-7">
+            <Button
+              variant="destructive"
+              size="icon-sm"
+              className="text-destructive"
+              onClick={onClear}>
+              <Trash2 />
+            </Button>
+          </div> : null
+        }
       </div>
     </div>
   )
