@@ -108,7 +108,7 @@ export default function ContentsMain() {
     onSettled: (_, error, variables) => {
       if (error) return
 
-      const isTargetAction = ['edit', 'delete', 'status'].includes(variables.type)
+      const isTargetAction = ['delete', 'status'].includes(variables.type)
       
       const status = variables.updates?.status || variables.updates?.status
       const isNotReadyOrPublish = !['ready', 'published'].includes(status || '')
@@ -243,6 +243,12 @@ export default function ContentsMain() {
                 <ContentsMobileList
                   data={data?.data || []}
                   onFavorite={onFavorite}
+                  onEditContent={onEdit}
+                  onReadyContent={onReady}
+                  onPublishContent={onPublish}
+                  onArchivedContent={onArchived}
+                  onRestoreContent={onRestore}
+                  onDeleteContent={onDelete}
                 />
               </> : <>
                 <ContentsTableSkeleton />
