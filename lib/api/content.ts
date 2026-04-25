@@ -74,6 +74,25 @@ export async function setFavorite(id: string, item: ContentItem) {
   }
 }
 
+export async function setStatus(id: string, item: ContentItem) {
+  try {
+    await wait(500)
+    upsertContentItem(id, item)
+    
+    const statusLabel = item.status.charAt(0).toUpperCase() + item.status.slice(1)
+    const shortTitle = getExcerpt(item.title, 30)
+    
+    return toast.success(`"${shortTitle}" moved to ${statusLabel}`, {
+      position: 'top-center',
+      duration: 2000
+    })
+  } catch (error) {
+    return toast.error("Something went wrong. Please try again.", { 
+      position: 'top-center' 
+    })
+  }
+}
+
 export async function editContent(id: string, item: ContentItem) {
   try {
     await wait(500)
@@ -82,6 +101,23 @@ export async function editContent(id: string, item: ContentItem) {
     return toast.success(`"${getExcerpt(item.title, 40)}" was updated!`, {
       position: 'top-center',
       duration: 1000
+    })
+  } catch (error) {
+    return toast.error("Something went wrong. Please try again.", { 
+      position: 'top-center' 
+    })
+  }
+}
+
+
+export async function deleteContent(id: ContentItem["id"], item: ContentItem) {
+  try {
+    await wait(500)
+    removeContentItem(id)
+    
+    return toast.success(`"${getExcerpt(item.title, 40)}" was removed!`, {
+      position: 'top-center',
+      duration: 2000
     })
   } catch (error) {
     return toast.error("Something went wrong. Please try again.", { 

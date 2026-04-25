@@ -55,9 +55,17 @@ export function getPaginatedContents({
   }
 
   // Filter by Status
-  if (status && status !== 'all') {
-    filteredData = filteredData.filter(item => item.status === status)
-  }
+  filteredData = filteredData.filter(item => {
+    if (status === 'archived') {
+      return item.status === 'archived'
+    }
+
+    if (!status || status === 'all') {
+      return item.status !== 'archived'
+    }
+
+    return item.status === status
+  })
 
   // SORTING
   if (sortBy && sortBy !== 'all') {
@@ -118,6 +126,7 @@ export function upsertContentItem(id: string, item: ContentItem) {
 }
 
 export function removeContentItem(id: string) {
-  // const contents = getStoredContents().filter((item) => item.id !== id)
-  // saveStoredContents(contents)
+  const { data } = getStoredContents()
+  const result = data.filter((item) => item.id !== id)
+  saveStoredContents(result)
 }

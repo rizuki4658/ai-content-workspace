@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ideaStatus, ideaTypes } from "@/lib/data/generate"
 import { contentHeaders } from "@/lib/data/contents"
 
-import { editContent, getContents, setFavorite } from "@/lib/api/content"
+import { deleteContent, editContent, getContents, setFavorite, setStatus } from "@/lib/api/content"
 import { GetContentResponse } from "@/lib/storage/content"
 
 import {
@@ -66,8 +66,6 @@ export default function ContentsMain() {
     },
 
     onMutate: async (newVariable) => {
-      if (newVariable.type === 'edit') return {}
-
       await queryClient.cancelQueries({ queryKey: ['contents'] })
 
       const previousContents = queryClient.getQueriesData<GetContentResponse>({
@@ -78,6 +76,11 @@ export default function ContentsMain() {
         { queryKey: ['contents'] },
         (old) => {
           if (!old) return old
+
+          if (newVariable.type === 'delete') return {
+            ...old,
+            data: old.data.filter(item => item.id !== newVariable.id)
+          }
 
           return {
             ...old,
@@ -103,7 +106,16 @@ export default function ContentsMain() {
     },
 
     onSettled: (_, error, variables) => {
-      !!['edit', 'delete'].includes(variables.type) && !error && queryClient.invalidateQueries({ queryKey: ['contents'] })
+      if (error) return
+
+      const isTargetAction = ['edit', 'delete', 'status'].includes(variables.type)
+      
+      const status = variables.updates?.status || variables.updates?.status
+      const isNotReadyOrPublish = !['ready', 'published'].includes(status || '')
+
+      if (isTargetAction && isNotReadyOrPublish) {
+        queryClient.invalidateQueries({ queryKey: ['contents'] })
+      }
     },
   })
 
@@ -140,6 +152,67 @@ export default function ContentsMain() {
     })
   }
 
+  const onReady = async (item: ContentItem) => {
+    await updateContent({
+      id: item.id,
+      updates: {
+        ...item,
+        status: 'ready',
+        updatedAt: new Date().toISOString()
+      },
+      type: 'status',
+      apiFn: setStatus
+    })
+  }
+
+  const onPublish = async (item: ContentItem) => {
+    await updateContent({
+      id: item.id,
+      updates: {
+        ...item,
+        status: 'published',
+        updatedAt: new Date().toISOString()
+      },
+      type: 'status',
+      apiFn: setStatus
+    })
+  }
+
+  const onArchived = async (item: ContentItem) => {
+    await updateContent({
+      id: item.id,
+      updates: {
+        ...item,
+        status: 'archived',
+        updatedAt: new Date().toISOString()
+      },
+      type: 'status',
+      apiFn: setStatus
+    })
+  }
+
+  const onRestore = async (item: ContentItem) => {
+    await updateContent({
+      id: item.id,
+      updates: {
+        ...item,
+        status: 'draft',
+        updatedAt: new Date().toISOString()
+      },
+      type: 'status',
+      apiFn: setStatus
+    })
+  }
+
+  const onDelete = async (id: ContentItem["id"], item: ContentItem) => {
+    await updateContent({
+      id: item.id,
+      updates: item,
+      type: 'delete',
+      apiFn: deleteContent
+    })
+  }
+
   if (isLoading) return <ContentsSkeletonCard />
 
   return (
@@ -161,6 +234,11 @@ export default function ContentsMain() {
                   data={data?.data || []}
                   onFavorite={onFavorite}
                   onEditContent={onEdit}
+                  onReadyContent={onReady}
+                  onPublishContent={onPublish}
+                  onArchivedContent={onArchived}
+                  onRestoreContent={onRestore}
+                  onDeleteContent={onDelete}
                 />
                 <ContentsMobileList
                   data={data?.data || []}

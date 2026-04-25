@@ -64,10 +64,30 @@ export const contentsEditFormSchema = z.object({
   status: contentStatusSchema
 })
 
+export const contentsDeleteFormSchema = z.object({
+  id: z
+    .string()
+    .trim()
+    .min(1, "ID is required")
+})
+
+
+export const contentsStatusFormSchema = z.object({
+  status: contentStatusSchema
+})
+
 export type GenerateContentFormValues = z.infer<
   typeof generateContentFormSchema
 >
 
 export type ContentsEditFormValues = z.infer<
   typeof contentsEditFormSchema
+>
+
+export type ContentsStatusFormValues = z.infer<
+  typeof contentsStatusFormSchema
+>
+
+export type ContentsDeleteFormValues = z.infer<
+  typeof contentsDeleteFormSchema
 >
