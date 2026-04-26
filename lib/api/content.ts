@@ -109,7 +109,6 @@ export async function editContent(id: string, item: ContentItem) {
   }
 }
 
-
 export async function deleteContent(id: ContentItem["id"], item: ContentItem) {
   try {
     await wait(500)

@@ -7,7 +7,7 @@ import ContentsCard from "@/components/contents/contents-card"
 import ContentsSkeleton from "@/components/contents/contents-skeleton"
 
 export const metadata: Metadata = {
-  title: "Dashboard - AI Content Workspace",
+  title: "Contents - AI Content Workspace",
   description: "AI Content Workspace",
 }
 

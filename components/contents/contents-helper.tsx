@@ -48,10 +48,14 @@ export function renderBadge({
   item: ContentItem;
   key: keyof ContentItem;
 }) {
+  if (!item) return null
+  
   const value = item[key]
+  console.log(value)
 
   switch (key) {
     case 'type':
+      console.log('tai')
       return (
         <Badge
           variant="secondary"

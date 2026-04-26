@@ -41,3 +41,10 @@ export const contentStatusColorMap = {
   archived: "bg-muted text-muted-foreground border-muted-foreground/20",
 }
 
+export const contentTypeColorChartMap = {
+  blog_idea: '#A70CFA',
+  caption: '#F6339A',
+  email: '#2B7FFF',
+  product_description: '#FF6900',
+  social_media: '#00C950'
+}
