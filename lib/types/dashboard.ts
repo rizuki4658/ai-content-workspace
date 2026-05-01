@@ -1,4 +1,4 @@
-import type { ContentStatus, ContentType } from "./content"
+import type { ContentItem, ContentStatus, ContentType } from "./content"
 
 export type TrendType = "positive" | "negative" | "neutral"
 
@@ -75,4 +75,24 @@ export type DashboardOverviewData = {
   quickActions: DashboardQuickAction[];
   suggestedPrompts: DashboardSuggestedPrompt[];
   contentDistribution: DashboardContentDistribution[];
+}
+
+export interface DashboardStatsResponse {
+  total: number;
+  content_published?: ContentItem;
+  content?: ContentItem;
+  counts?: {
+      status?: Record<string, number>;
+      types?: Record<string, number>;
+  };
+  stats?: DashboardStat[]
+}
+
+export interface DashboardSummaryResponse {
+  blog_idea?: number;
+  caption?: number;
+  email?: number;
+  product_description?: number;
+  social_media?: number;
+  total?: number;
 }

@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ideaTones, ideaTypes } from "@/lib/data/generate"
-import { GetAnalyticsResponse } from "@/lib/api/analytics"
+import { GetAnalyticsResponse } from "@/lib/types/analytics"
 import { contentToneColorMap, contentTypeColorMap } from "@/lib/data/contents"
 import { BrainCircuit, FileText, Volume2 } from "lucide-react"
 import { relativeDate } from "@/lib/utils/date-format"
@@ -76,7 +76,7 @@ export default function AnalyticsRecentsInsightsSection({
 
                   <div className="min-w-0 space-y-1">
                     <div>
-                      <Link href="/contents">
+                      <Link href={`/contents?id=${content.id}`}>
                         <Button variant="link" className="dark:text-white text-black block truncate text-sm font-medium px-0! h-auto!">
                           {content.title}
                         </Button>

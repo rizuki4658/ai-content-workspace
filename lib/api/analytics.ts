@@ -1,33 +1,9 @@
-
-import {
-  getStoredContents,
-  GetContentResponse
-} from "@/lib/storage/content"
+import { GetAnalyticsResponse } from "@/lib/types/analytics"
+import { getStoredContents } from "@/lib/storage/content"
 import { toast } from "sonner"
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-export interface GetAnalyticsResponse {
-  stats?: {
-    total?: number;
-    draft?: number;
-    ready?: number;
-    published?: number;
-  },
-  distribution?: {
-    blog_idea?: number;
-    caption?: number;
-    email?: number;
-    product_description?: number;
-    social_media?: number;
-    total?: number;
-  },
-  summary?: {
-    recents?: any[];
-    insights?: any[];
-  }
 }
 
 export async function getAnalytics(): Promise<GetAnalyticsResponse> {

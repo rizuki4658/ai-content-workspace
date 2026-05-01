@@ -23,7 +23,7 @@ export default function DashboardContentSummaryCard({
         </CardTitle>
       </CardHeader>
   
-      <CardContent className="flex h-65 flex-col justify-between space-y-4">
+      <CardContent className="flex flex-col justify-between space-y-4">
         <div className="space-y-4">
           {data.map((item) => {
             const isTop = item.name === top?.name

@@ -1,7 +1,5 @@
 import {
   Sparkles,
-  TrendingUp,
-  Wand2,
   FileText,
   PenTool,
   CheckCircle2,
@@ -11,20 +9,15 @@ import {
   Mail
 } from "lucide-react"
 
-export const highlightIconMap = {
-  performance: TrendingUp,
-  draft: Wand2,
-}
-
 export const statIconMap = {
   file: FileText,
   draft: PenTool
 }
 
 export const activityIconMap = {
-  generated: Sparkles,
+  draft: Sparkles,
   published: CheckCircle2,
-  suggest: Lightbulb
+  ready: Lightbulb
 }
 
 export const quickActionIconMap = {

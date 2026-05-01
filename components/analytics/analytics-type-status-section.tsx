@@ -10,7 +10,7 @@ import {
 
 import type { DashboardContentDistribution } from "@/lib/types/dashboard"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { GetAnalyticsResponse } from "@/lib/api/analytics";
+import { GetAnalyticsResponse } from "@/lib/types/analytics";
 import { useEffect, useState } from "react";
 import { ideaTypes } from "@/lib/data/generate";
 import { contentTypeColorChartMap } from "@/lib/data/contents";

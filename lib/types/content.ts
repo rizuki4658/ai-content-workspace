@@ -49,3 +49,11 @@ export type ContentFilter = {
   type?: ContentType | "all";
   by?: string
 }
+
+export type GenerateApiResponse = {
+  title: string;
+  type: ContentItem["type"];
+  tone?: ContentItem["tone"];
+  targetAudience?: string;
+  output: string;
+}

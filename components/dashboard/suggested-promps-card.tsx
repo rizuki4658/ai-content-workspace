@@ -1,4 +1,4 @@
-import { DashboardSuggestedPrompt } from "@/lib/types/dashboard";
+import { PromptSuggestionItem } from "@/lib/types/content";
 
 import { Sparkles } from "lucide-react";
 
@@ -9,9 +9,10 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { renderBadge } from "@/components/contents/contents-helper"
+import Link from "next/link";
 
-export default function DashboardSuggestedPromptsCard({ data }: { data: DashboardSuggestedPrompt[] }) {
+export default function DashboardSuggestedPromptsCard({ data }: { data: PromptSuggestionItem[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>
@@ -35,13 +36,15 @@ export default function DashboardSuggestedPromptsCard({ data }: { data: Dashboar
           >
             <div className="flex items-start justify-between gap-4">
               <div className="space-y-1">
-                <p className="text-sm font-medium">{prompt.title}</p>
+                <Link href={`/generate?suggest=${prompt.id}`}>
+                  <p className="text-sm font-medium hover:underline">{prompt.label}</p>
+                </Link>
                 <p className="text-xs text-muted-foreground">
-                  {prompt.description}
+                  {prompt.prompt}
                 </p>
               </div>
 
-              <Badge variant="secondary">{prompt.tag}</Badge>
+              {renderBadge({ item: prompt as any, key: 'type' })}
             </div>
           </div>
         ))}

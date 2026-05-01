@@ -6,7 +6,7 @@ import { contentStatusColorMap } from "@/lib/data/contents"
 import { contentStatusIconMap } from "@/components/contents/contents-helper"
 import { Layers, LucideProps } from "lucide-react"
 import { ForwardRefExoticComponent, RefAttributes } from "react"
-import { GetAnalyticsResponse } from "@/lib/api/analytics"
+import { GetAnalyticsResponse } from "@/lib/types/analytics"
 import AnalyticsStatsSkeleton from "./skeletons/analytics-stats-skeleton"
 
 export function Icon ({

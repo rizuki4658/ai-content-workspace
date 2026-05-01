@@ -1,5 +1,7 @@
-import type { DashboardRecentActivity } from "@/lib/types/dashboard"
+import type { ContentItem } from "@/lib/types/content"
 
+import Link from "next/link"
+import { relativeDate } from "@/lib/utils/date-format"
 import { Activity, Sparkles } from "lucide-react"
 
 import {
@@ -12,8 +14,9 @@ import {
 import { Button } from "@/components/ui/button"
 
 import { activityIconMap } from '@/lib/utils/dashboard-icon-maps'
+import { getExcerpt } from "@/components/contents/contents-helper"
 
-export default function DashboardRecentsActivityCard({ data }: { data: DashboardRecentActivity[] }) {
+export default function DashboardRecentsActivityCard({ data }: { data: ContentItem[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>
@@ -29,9 +32,11 @@ export default function DashboardRecentsActivityCard({ data }: { data: Dashboard
             </CardDescription>
           </div>
 
-          <Button variant="link" className="text-xs font-medium text-primary">
-            View all
-          </Button>
+          <Link href="/analytics">
+            <Button variant="link" className="text-xs font-medium text-primary">
+              View all
+            </Button>
+          </Link>
         </div>
       </CardHeader>
 
@@ -39,25 +44,31 @@ export default function DashboardRecentsActivityCard({ data }: { data: Dashboard
         {data.map((activity) => {
           const Icon =
             activityIconMap[
-              activity.key as keyof typeof activityIconMap
+              activity.status as keyof typeof activityIconMap
             ] || Sparkles
 
           return (
             <div
-              key={activity.key}
+              key={activity.id}
               className="group flex items-start gap-3 rounded-md border p-3 transition hover:bg-muted"
             >
               <Icon className="mt-0.5 h-4 w-4 text-muted-foreground" />
 
               <div className="flex-1 space-y-1">
-                <p className="text-sm font-medium">{activity.title}</p>
+                <Link href={`/contents?id=${activity.id}`}>
+                  <Button
+                    variant="link"
+                    className="dark:text-white text-black block truncate text-sm font-medium px-0! h-auto!">
+                    {activity.title}
+                  </Button>
+                </Link>
                 <p className="text-xs text-muted-foreground">
-                  {activity.message}
+                  {getExcerpt(activity.output, 80)}
                 </p>
               </div>
 
               <span className="whitespace-nowrap text-xs text-muted-foreground">
-                {activity.time}
+                {relativeDate(activity.updatedAt)}
               </span>
             </div>
           )

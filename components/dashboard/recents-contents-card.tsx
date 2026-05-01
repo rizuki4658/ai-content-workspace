@@ -1,4 +1,6 @@
-import type { DashboardRecentContentItem } from "@/lib/types/dashboard"
+import type { ContentItem } from "@/lib/types/content"
+import { relativeDate } from "@/lib/utils/date-format"
+import { renderBadge } from "../contents/contents-helper"
 
 import { FileText } from "lucide-react"
 
@@ -10,9 +12,9 @@ import {
   CardContent,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
+import Link from "next/link"
 
-export default function DashboardRecentsContentsCard({ data }: { data: DashboardRecentContentItem[] }) {
+export default function DashboardRecentsContentsCard({ data }: { data: ContentItem[] }) {
   return (
     <Card className="rounded-sm">
       <CardHeader>
@@ -28,9 +30,11 @@ export default function DashboardRecentsContentsCard({ data }: { data: Dashboard
             </CardDescription>
           </div>
 
-          <Button variant="link" className="text-xs font-medium text-primary">
-            View all
-          </Button>
+          <Link href="/contents">
+            <Button variant="link" className="text-xs font-medium text-primary">
+              View all
+            </Button>
+          </Link>
         </div>
       </CardHeader>
 
@@ -44,25 +48,23 @@ export default function DashboardRecentsContentsCard({ data }: { data: Dashboard
               <FileText className="mt-0.5 h-4 w-4 text-muted-foreground" />
 
               <div className="min-w-0 space-y-1">
-                <p className="truncate text-sm font-medium">
-                  {content.title}
-                </p>
+                <Link href={`/contents?id=${content.id}`}>
+                  <Button
+                    variant="link"
+                    className="dark:text-white text-black block truncate text-sm font-medium px-0! h-auto!">
+                    {content.title}
+                  </Button>
+                </Link>
 
                 <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <span>{content.type}</span>
+                  <span>{renderBadge({ item: content as any, key: 'type' })}</span>
                   <span>•</span>
-                  <span>{content.createdAt}</span>
+                  <span>{relativeDate(content.createdAt)}</span>
                 </div>
               </div>
             </div>
 
-            <Badge
-              variant={
-                content.status === "published" ? "default" : "secondary"
-              }
-            >
-              {content.status}
-            </Badge>
+            {renderBadge({ item: content as any, key: 'status' })}
           </div>
         ))}
       </CardContent>

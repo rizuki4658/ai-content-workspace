@@ -2,7 +2,8 @@
 
 import { Suspense } from "react"
 import { useQuery } from "@tanstack/react-query"
-import { getAnalytics, GetAnalyticsResponse } from "@/lib/api/analytics"
+import { getAnalytics } from "@/lib/api/analytics"
+import { GetAnalyticsResponse } from "@/lib/types/analytics"
 
 import AnalyticsStatsSection from "@/components/analytics/analytics-stats-section"
 import AnalyticsStatsSkeleton from "@/components/analytics/skeletons/analytics-stats-skeleton"

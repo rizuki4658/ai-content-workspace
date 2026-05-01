@@ -1,15 +1,7 @@
 import type { GenerateContentFormValues } from "@/lib/validations/contents"
-import type { ContentItem } from "@/lib/types/content"
+import type { ContentItem, GenerateApiResponse } from "@/lib/types/content"
 
 import { generateId } from "@/lib/utils/generator-id"
-
-type GenerateApiResponse = {
-  title: string;
-  type: ContentItem["type"];
-  tone?: ContentItem["tone"];
-  targetAudience?: string;
-  output: string;
-}
 
 export async function generateContent(
   values: GenerateContentFormValues

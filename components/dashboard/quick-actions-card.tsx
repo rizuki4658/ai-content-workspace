@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button"
 
 import { quickActionIconMap } from "@/lib/utils/dashboard-icon-maps"
+import Link from "next/link";
 
 export default function DashboardQuickActionsCard({ data }: { data: DashboardQuickAction[] }) {
   return (
@@ -53,9 +54,13 @@ export default function DashboardQuickActionsCard({ data }: { data: DashboardQui
                 </div>
               </div>
 
-              <Button size="sm" variant="secondary">
-                {action.cta}
-              </Button>
+              <Link href={`/generate?actions=${action.id}`}>
+                <Button
+                  size="sm"
+                  variant="outline">
+                  {action.cta}
+                </Button>
+              </Link>
             </div>
           )
         })}
