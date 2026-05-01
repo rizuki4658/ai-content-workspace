@@ -4,7 +4,7 @@ import PageTitle from "@/components/shared/page-title"
 import NotificationsCard from "@/components/notifications/notifications-card"
 
 export const metadata: Metadata = {
-  title: "Analytics - AI Content Workspace",
+  title: "Notifications - AI Content Workspace",
   description: "AI Content Workspace",
 }
 

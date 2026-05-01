@@ -265,7 +265,7 @@ export default function NotificationsCard() {
     <Card>
       <CardHeader className="border-b">
         <div className="space-y-6">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex flex-col lg:flex-row lg:items-center items-end lg:justify-between gap-4">
             <InputGroup className="w-full md:max-w-md">
               <InputGroupAddon>
                 <Search />

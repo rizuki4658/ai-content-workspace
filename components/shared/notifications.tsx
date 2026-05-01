@@ -204,7 +204,7 @@ export default function Notifications() {
         <Link href="/notifications">
           <Button variant="ghost" size="icon" className="rounded-full hover:text-gray-500 text-gray-500">
             <div className="relative">
-              {!!unreadCount ? <div className="absolute -top-1 right-0 bg-red-500 h-2 w-2 rounded-full" /> : null }
+              {unreadCount > 0 ? <div className="absolute -top-1 right-0 bg-red-500 h-2 w-2 rounded-full" /> : null }
               <Bell />
             </div>
           </Button>

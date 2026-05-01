@@ -186,7 +186,7 @@ export default function ContentsEditForm({
                 id="content-output"
                 rows={8}
                 placeholder="Generated content here..."
-                className="min-h-[220px] flex-1 resize-none rounded-sm"
+                className="min-h-55 flex-1 resize-none rounded-sm"
                 aria-invalid={fieldState.invalid}
               />
               {fieldState.invalid && (

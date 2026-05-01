@@ -159,7 +159,7 @@ export default function ContentsMobileList({
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="flex justify-between gap-1">
+              <div className="flex justify-between gap-1 flex-wrap">
                 <div className="flex items-center gap-1">
                   {renderBadge({item, key: 'type'})}
                   {renderBadge({item, key: 'tone'})}

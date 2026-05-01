@@ -5,6 +5,7 @@ import type {
   NotificationItem,
   NotificationsPaginatedResponse
 } from "@/lib/types/notifications"
+import { generateId } from "@/lib/utils/generator-id"
 
 const STORAGE_KEY = process.env.NOTIFICATIONS_STORAGE_KEY || 'ai-content-workspace-notifications'
 
@@ -99,7 +100,7 @@ export async function createNotification(
   const notifications = getStoredNotifications()
 
   const notification: NotificationItem = {
-    id: crypto.randomUUID(),
+    id: generateId(),
     ...payload,
     isRead: false,
     createdAt: new Date().toISOString(),
