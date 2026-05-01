@@ -1,26 +1,9 @@
 import type { ContentItem, ContentStatus } from "@/lib/types/content"
 import type { GenerateContentFormValues } from "@/lib/validations/contents"
-import { writingTips, promptSuggestions } from "@/lib/data/generate"
 import { generateId } from "@/lib/utils/generator-id"
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms))
-}
-
-function buildOutput(values: GenerateContentFormValues) {
-  const audienceText = values.targetAudience
-    ? ` for ${values.targetAudience}`
-    : ""
-
-  const toneText = values.tone ? ` in a ${values.tone} tone` : ""
-
-  return `# ${values.title}
-
-Here is a generated ${values.type.replaceAll("_", " ")}${audienceText}${toneText}.
-
-${values.prompt}
-
-This content is designed to feel clear, relevant, and aligned with your requested direction. You can now refine, save, or publish it based on your workflow.`
 }
 
 export async function generateContent(
@@ -50,14 +33,3 @@ export async function generateContent(
     "updatedAt": "2026-04-16T13:02:03.129Z"
   }
 }
-
-export async function fetchSuggestedPrompts() {
-  await wait(1400)
-  return promptSuggestions
-}
-
-export async function fetchWriteTips() {
-  await wait(1900)
-  return writingTips
-}
-

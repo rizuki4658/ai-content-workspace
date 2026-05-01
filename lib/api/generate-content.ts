@@ -2,6 +2,11 @@ import type { GenerateContentFormValues } from "@/lib/validations/contents"
 import type { ContentItem, GenerateApiResponse } from "@/lib/types/content"
 
 import { generateId } from "@/lib/utils/generator-id"
+import { writingTips, promptSuggestions } from "@/lib/data/generate"
+
+function wait(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
 
 export async function generateContent(
   values: GenerateContentFormValues
@@ -38,3 +43,14 @@ export async function generateContent(
     updatedAt: now,
   };
 }
+
+export async function fetchSuggestedPrompts() {
+  await wait(500)
+  return promptSuggestions
+}
+
+export async function fetchWriteTips() {
+  await wait(500)
+  return writingTips
+}
+
