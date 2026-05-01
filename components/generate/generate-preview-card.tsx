@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import { useGenerateContent } from "@/contexts/generate-context"
+import { useNotification } from "@/contexts/notification-context"
 import { ideaTypes, ideaStatus } from "@/lib/data/generate"
 import { relativeDate } from "@/lib/utils/date-format"
 import { getContents, saveContent } from "@/lib/api/content"
@@ -29,6 +30,7 @@ import GeneratePreviewDiscardDialog from "./generate-preview-discard-dialog"
 import GeneratePreviewToolbar from "./generate-preview-toolbar"
 
 export default function GeneratePreviewCard() {
+  const { notifyContentCreated } = useNotification()
   const { content, setContent } = useGenerateContent()
   const [showDiscardDialog, setShowDiscardDialog] = useState(false)
   const [currentContent, setCurrentContent] = useState<null | string>(null)
@@ -118,6 +120,10 @@ export default function GeneratePreviewCard() {
           type: "blog_idea",
           prompt: ''
         }
+      })
+      notifyContentCreated({
+        ...content.data,
+        status
       })
     } catch(err) {
       console.log(err)

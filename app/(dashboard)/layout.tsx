@@ -7,6 +7,7 @@ import AppSidebar from "@/components/layout/app-sidebar";
 import PageContainer from "@/components/layout/page-container";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import DraggableCTA from "@/components/shared/cta-button";
+import { NotificationProvider } from "@/contexts/notification-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,7 +39,9 @@ export default function DashboardLayout({
             <PageContainer>
               <>
                 <DraggableCTA />
-                {children}
+                <NotificationProvider>
+                  {children}
+                </NotificationProvider>
               </>
             </PageContainer>
           </div>

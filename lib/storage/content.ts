@@ -1,6 +1,6 @@
 import type { ContentItem } from "@/lib/types/content"
 
-const CONTENTS_STORAGE_KEY = "ai-content-workspace-contents"
+const CONTENTS_STORAGE_KEY = process.env.CONTENTS_STORAGE_KEY || "ai-content-workspace-contents"
 
 export interface GetContentResponse {
   data: ContentItem[];

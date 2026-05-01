@@ -9,6 +9,7 @@ import { generateContent } from "@/lib/api/generate-content"
 // import { generateContent } from "@/lib/server/generate"
 import { ideaTypes, ideaTones } from "@/lib/data/generate"
 import { useGenerateContent } from "@/contexts/generate-context"
+import { useNotification } from "@/contexts/notification-context"
 
 import {
   Card,
@@ -49,6 +50,7 @@ export default function GenerateFormCard({
 }: {
   onReset?: () => void
 }) {
+  const { notifyContentGenerated, notifyContentFailedGenerated } = useNotification()
   const { content, setContent } = useGenerateContent()
   const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<GenerateContentFormValues>({
     resolver: zodResolver(generateContentFormSchema),
@@ -88,6 +90,7 @@ export default function GenerateFormCard({
         data: result,
         isLoading: false
       })
+      notifyContentGenerated(result)
     } catch (err) {
       toast.error(
         err instanceof Error ? err.message : "Failed to generate content.",
@@ -100,6 +103,20 @@ export default function GenerateFormCard({
         ...content,
         data: null,
         isLoading: false
+      })
+      notifyContentFailedGenerated({
+        id: 'unknown',
+        title: values.title,
+        type: values.type,
+        prompt: values.prompt,
+        output: '-',
+        status: 'archived',
+        favorite: false,
+        tone: values.tone,
+        targetAudience: values.targetAudience,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        keywords: values.keywords
       })
     }
   }

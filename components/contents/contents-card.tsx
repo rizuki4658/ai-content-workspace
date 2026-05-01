@@ -2,18 +2,21 @@
 
 import type { ContentFilter, ContentItem } from "@/lib/types/content"
 import { useDebounce } from "@/hooks/use-debounce"
+import { useNotification } from "@/contexts/notification-context"
 
 import { useState } from "react"
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ideaStatus, ideaTypes } from "@/lib/data/generate"
 import { contentHeaders } from "@/lib/data/contents"
 
-import { deleteContent, editContent, getContentById, getContents, setFavorite, setStatus } from "@/lib/api/content"
+import { deleteContent, editContent, getContents, setFavorite, setStatus } from "@/lib/api/content"
 import { GetContentResponse } from "@/lib/storage/content"
 
 import {
   Card,
-  CardContent
+  CardContent,
+  CardFooter,
+  CardHeader
 } from "@/components/ui/card"
 import ContentsFilter from "./contents-filter"
 import ContentsTable from "./contents-table"
@@ -23,6 +26,7 @@ import ContentsSkeletonCard from "./contents-skeleton"
 import { ContentsListSkeleton, ContentsTableSkeleton } from "./skeletons/contents-table-list-skeleton"
 
 export default function ContentsMain({ editId } : { editId?: string }) {
+  const { notifyContentEdited, notifyContentDeleted, notifyContentStatusChanged } = useNotification()
   const defaultFilterValue: ContentFilter = {
     search: '',
     status: 'all',
@@ -150,6 +154,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       type: 'edit',
       apiFn: editContent
     })
+    notifyContentEdited(item)
   }
 
   const onReady = async (item: ContentItem) => {
@@ -163,6 +168,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       type: 'status',
       apiFn: setStatus
     })
+    notifyContentStatusChanged(item)
   }
 
   const onPublish = async (item: ContentItem) => {
@@ -176,6 +182,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       type: 'status',
       apiFn: setStatus
     })
+    notifyContentStatusChanged(item)
   }
 
   const onArchived = async (item: ContentItem) => {
@@ -189,6 +196,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       type: 'status',
       apiFn: setStatus
     })
+    notifyContentStatusChanged(item)
   }
 
   const onRestore = async (item: ContentItem) => {
@@ -202,6 +210,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       type: 'status',
       apiFn: setStatus
     })
+    notifyContentStatusChanged(item)
   }
 
   const onDelete = async (id: ContentItem["id"], item: ContentItem) => {
@@ -211,14 +220,15 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       type: 'delete',
       apiFn: deleteContent
     })
+    notifyContentDeleted(item)
   }
 
   if (isLoading) return <ContentsSkeletonCard />
 
   return (
     <Card>
-      <CardContent>
-        <div className="space-y-10">
+      <CardHeader className="border-b">
+        <div>
           <ContentsFilter
             value={filter}
             status={ideaStatus}
@@ -226,7 +236,10 @@ export default function ContentsMain({ editId } : { editId?: string }) {
             onChange={(newFilter) => setFilter(newFilter)}
             onClear={onClear}
           />
-
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="space-y-10">
           <div className="space-y-4">
             {!isFetching ? <>
                 <ContentsTable
@@ -257,14 +270,16 @@ export default function ContentsMain({ editId } : { editId?: string }) {
                 <ContentsListSkeleton />
               </>
             }
-            <ContentsPagination
-              meta={data?.meta}
-              page={page}
-              onPageChange={(newPage) => setPage(newPage)}
-            />
           </div>
         </div>
       </CardContent>
+      <CardFooter>
+        <ContentsPagination
+          meta={data?.meta}
+          page={page}
+          onPageChange={(newPage) => setPage(newPage)}
+        />
+      </CardFooter>
     </Card>
   )
 }
