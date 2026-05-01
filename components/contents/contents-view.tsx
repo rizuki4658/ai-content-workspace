@@ -84,7 +84,9 @@ export default function ContentsView({ open, item, loading, onClose }: {
           </DialogTitle>
           {!loading ? <DialogDescription> 
             {item?.prompt}
-          </DialogDescription> : <Skeleton className="w-10/12 h-6" />}
+          </DialogDescription> : <DialogDescription asChild>
+            <Skeleton className="w-10/12 h-6" />
+          </DialogDescription>}
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto p-6">

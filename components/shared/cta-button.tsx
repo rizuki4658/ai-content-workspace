@@ -6,6 +6,7 @@ import { Plus, Wand2, BriefcaseBusiness, X } from 'lucide-react'
 import { cn } from "@/lib/utils"
 import { Button } from '@/components/ui/button'
 import HireMeDialog from "@/components/layout/hire-me-dialog"
+import Link from 'next/link'
 
 export default function DraggableCTA() {
   const constraintsRef = useRef(null)
@@ -54,15 +55,15 @@ export default function DraggableCTA() {
                   <BriefcaseBusiness size={16} />
                 </Button>
               </HireMeDialog>
-              
-              <Button
-                variant="ghost"
-                className="flex items-center gap-3 px-4 py-2 rounded-full bg-white dark:bg-zinc-900 border shadow-xl text-sm font-medium whitespace-nowrap"
-                onClick={() => { alert("Generate"); setIsOpen(false); }}
-              >
-                <span>Generate</span>
-                <Wand2 size={16} />
-              </Button>
+
+              <Link href="/generate">
+                <Button
+                  variant="ghost"
+                  className="flex items-center gap-3 px-4 py-2 rounded-full bg-white dark:bg-zinc-900 border shadow-xl text-sm font-medium whitespace-nowrap">
+                  <span>Generate</span>
+                  <Wand2 size={16} />
+                </Button>
+              </Link>
             </motion.div>
           )}
         </AnimatePresence>

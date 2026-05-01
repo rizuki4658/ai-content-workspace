@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useQuery } from "@tanstack/react-query"
 import { getContentById } from "@/lib/api/content"
 
@@ -53,6 +54,7 @@ export default function ContentsTable({
   onRestoreContent?: (item: ContentItem) => void | Promise<void>;
   onDeleteContent?: (id: ContentItem["id"], item: ContentItem) => void | Promise<void>;
 }) {
+  const router = useRouter()
   const isEditViewMode = Boolean(editId)
   const { data: dataContent, isLoading: isLoadingContent, isFetching: isFetchingContent } = useQuery({
     queryKey: ["content", editId],
@@ -155,6 +157,18 @@ export default function ContentsTable({
     onPublishContent?.(item)
   }
 
+  const onCloseDialog = () => {
+    setContent({
+      openView: false,
+      openEdit: false,
+      openArchived: false,
+      openRestore: false,
+      openDelete: false,
+      item: undefined
+    })
+    router.replace("/contents", { scroll: false })
+  }
+
   useEffect(() => {
     if (!!isEditViewMode) {
       setContent((prev) => ({
@@ -231,27 +245,13 @@ export default function ContentsTable({
         loading={isLoadingContent || isFetchingContent}
         item={content.item}
         onSave={onEdit}
-        onClose={() => setContent({
-          openView: false,
-          openEdit: false,
-          openArchived: false,
-          openRestore: false,
-          openDelete: false,
-          item: undefined
-        })}
+        onClose={onCloseDialog}
       />
       <ContentsView
         open={content.openView}
         loading={isLoadingContent || isFetchingContent}
         item={content.item}
-        onClose={() => setContent({
-          openView: false,
-          openEdit: false,
-          openArchived: false,
-          openRestore: false,
-          openDelete: false,
-          item: undefined
-        })}
+        onClose={onCloseDialog}
       />
       {data.length ?
         <>
@@ -259,40 +259,19 @@ export default function ContentsTable({
             open={content.openArchived}
             item={content.item}
             onConfirm={onArchived}
-            onCancel={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onCancel={onCloseDialog}
           />
           <ContentsRestore
             open={content.openRestore}
             item={content.item}
             onConfirm={onRestore}
-            onCancel={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onCancel={onCloseDialog}
           />
           <ContentsDelete
             open={content.openDelete}
             item={content.item}
             onConfirm={onDelete}
-            onCancel={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onCancel={onCloseDialog}
           />
         </> : null
       }

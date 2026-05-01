@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -46,6 +47,7 @@ export default function HireMeDialog({ children }: { children?: React.ReactNode 
             <div className="flex items-center gap-2 dark:text-white text-gray-700">
               Work With Me
             </div>
+            <DialogDescription />
           </DialogTitle>
         </DialogHeader>
 

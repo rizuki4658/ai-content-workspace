@@ -9,7 +9,7 @@ export default function GenerateFormPreviewSection() {
   const router = useRouter()
 
   const onReset = () => {
-    router.replace("/generate")
+    router.replace("/generate", { scroll: false })
   }
 
   return (

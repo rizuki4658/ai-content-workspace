@@ -1,6 +1,7 @@
 import { useState } from "react"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import type { ContentItem } from "@/lib/types/content"
 
 import {
@@ -45,6 +46,7 @@ export default function ContentsMobileList({
   onRestoreContent?: (item: ContentItem) => void | Promise<void>;
   onDeleteContent?: (id: ContentItem["id"], item: ContentItem) => void | Promise<void>;
 }) {
+  const router = useRouter()
   const [content, setContent] = useState<{
     openView: boolean;
     openEdit: boolean;
@@ -103,6 +105,18 @@ export default function ContentsMobileList({
   
   const onPublish = (item: ContentItem) => {
     onPublishContent?.(item)
+  }
+
+  const onCloseDialog = () => {
+    setContent({
+      openView: false,
+      openEdit: false,
+      openArchived: false,
+      openRestore: false,
+      openDelete: false,
+      item: undefined
+    })
+    router.replace("/contents", { scroll: false })
   }
 
   return (
@@ -174,66 +188,31 @@ export default function ContentsMobileList({
           <ContentsView
             open={content.openView}
             item={content.item}
-            onClose={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onClose={onCloseDialog}
           />
           <ContentsEdit
             open={content.openEdit}
             item={content.item}
             onSave={onEdit}
-            onClose={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onClose={onCloseDialog}
           />
           <ContentsArchived
             open={content.openArchived}
             item={content.item}
             onConfirm={onArchived}
-            onCancel={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onCancel={onCloseDialog}
           />
           <ContentsRestore
             open={content.openRestore}
             item={content.item}
             onConfirm={onRestore}
-            onCancel={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onCancel={onCloseDialog}
           />
           <ContentsDelete
             open={content.openDelete}
             item={content.item}
             onConfirm={onDelete}
-            onCancel={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
+            onCancel={onCloseDialog}
           />
         </> : null
       }
