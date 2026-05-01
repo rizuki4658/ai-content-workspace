@@ -44,7 +44,11 @@ const defaultValues: GenerateContentFormValues = {
   keywords: ""
 }
 
-export default function GenerateFormCard() {
+export default function GenerateFormCard({
+  onReset
+}: {
+  onReset?: () => void
+}) {
   const { content, setContent } = useGenerateContent()
   const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<GenerateContentFormValues>({
     resolver: zodResolver(generateContentFormSchema),
@@ -59,8 +63,8 @@ export default function GenerateFormCard() {
         title: content.form.title || "",
         prompt: content.form.prompt || "",
         tone: content.form.tone || "professional",
-        targetAudience: "",
-        keywords: ""
+        targetAudience: content.form?.targetAudience || "",
+        keywords: content.form?.keywords || ""
       })
     }
   }, [content.form?.uniqueId, reset])
@@ -102,6 +106,7 @@ export default function GenerateFormCard() {
 
   const onClear = () => {
     reset(defaultValues)
+    onReset?.()
     toast.info("Form has been cleared.", { position: "top-center", duration: 1000 })
   }
 

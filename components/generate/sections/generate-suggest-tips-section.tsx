@@ -7,7 +7,13 @@ import GenerateWriteTipsCard from "@/components/generate/generate-ai-tips"
 import GenerateSuggestedPromptsCard from "@/components/generate/generate-suggest-prompts"
 import { GenerateSuggestSkeleton, GenerateTipsSkeleton } from "@/components/generate/skeletons/generate-suggest-tips-skeleton"
 
-export default function DashboardQuickActionsSuggestedPromptsSection() {
+export default function DashboardQuickActionsSuggestedPromptsSection({
+  suggestId,
+  actionId
+}: {
+  suggestId?: string | number;
+  actionId?: string | number;
+}) {
   const { data: dataPrompts, isLoading: isLoadingPrompts, isFetching: isFetchingPrompts } = useQuery({
     queryKey: ['generate-suggest-prompts'],
     queryFn: () => fetchSuggestedPrompts(),
@@ -21,11 +27,15 @@ export default function DashboardQuickActionsSuggestedPromptsSection() {
     <div className="grid grid-flow-dense gap-6 grid-cols-6">
       <div className="lg:col-span-4 md:col-span-3 col-span-6">
         { !isLoadingPrompts && !isFetchingPrompts ?
-          <GenerateSuggestedPromptsCard data={dataPrompts || []} /> : <GenerateSuggestSkeleton />
+          <GenerateSuggestedPromptsCard
+            data={dataPrompts || []}
+            suggestId={suggestId}
+            actionId={actionId}
+          /> : <GenerateSuggestSkeleton />
         }
       </div>
       <div className="lg:col-span-2 md:col-span-3 col-span-6">
-        { !isLoadingPrompts && !isFetchingPrompts ?
+        { !isLoadingTips && !isFetchingTips ?
           <GenerateWriteTipsCard data={dataTips || []} /> : <GenerateTipsSkeleton />
         }
       </div>

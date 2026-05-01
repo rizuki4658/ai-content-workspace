@@ -39,6 +39,8 @@ export type PromptSuggestionItem = {
   prompt: string;
   type: ContentType;
   tone?: ContentTone;
+  targetAudience?: string;
+  keywords?: string;
 }
 
 export type ContentFilter = {

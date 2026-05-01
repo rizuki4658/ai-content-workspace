@@ -1,4 +1,4 @@
-import type { ContentItem, ContentStatus, ContentType } from "./content"
+import type { ContentItem, ContentStatus, ContentTone, ContentType } from "./content"
 
 export type TrendType = "positive" | "negative" | "neutral"
 
@@ -52,6 +52,10 @@ export type DashboardQuickAction = {
   description: string;
   cta: string;
   icon: string;
+  type?: ContentType;
+  audience?: string;
+  tone?: ContentTone;
+  tags?: string;
 }
 
 export type DashboardSuggestedPrompt = {

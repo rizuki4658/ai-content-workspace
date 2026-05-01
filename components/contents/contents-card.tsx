@@ -8,7 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { ideaStatus, ideaTypes } from "@/lib/data/generate"
 import { contentHeaders } from "@/lib/data/contents"
 
-import { deleteContent, editContent, getContents, setFavorite, setStatus } from "@/lib/api/content"
+import { deleteContent, editContent, getContentById, getContents, setFavorite, setStatus } from "@/lib/api/content"
 import { GetContentResponse } from "@/lib/storage/content"
 
 import {
@@ -22,7 +22,7 @@ import ContentsPagination from "./contents-pagination"
 import ContentsSkeletonCard from "./contents-skeleton"
 import { ContentsListSkeleton, ContentsTableSkeleton } from "./skeletons/contents-table-list-skeleton"
 
-export default function ContentsMain() {
+export default function ContentsMain({ editId } : { editId?: string }) {
   const defaultFilterValue: ContentFilter = {
     search: '',
     status: 'all',
@@ -230,6 +230,7 @@ export default function ContentsMain() {
           <div className="space-y-4">
             {!isFetching ? <>
                 <ContentsTable
+                  editId={editId}
                   headers={contentHeaders}
                   data={data?.data || []}
                   onFavorite={onFavorite}
@@ -241,6 +242,7 @@ export default function ContentsMain() {
                   onDeleteContent={onDelete}
                 />
                 <ContentsMobileList
+                  editId={editId}
                   data={data?.data || []}
                   onFavorite={onFavorite}
                   onEditContent={onEdit}

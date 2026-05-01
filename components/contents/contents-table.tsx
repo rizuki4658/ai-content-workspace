@@ -1,7 +1,9 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useQuery } from "@tanstack/react-query"
+import { getContentById } from "@/lib/api/content"
 
 import type { ContentItem } from "@/lib/types/content"
 import { relativeDate } from '@/lib/utils/date-format'
@@ -29,6 +31,7 @@ import ContentsRestore from "@/components/contents/contents-restore"
 import ContentsDelete from "@/components/contents/contents-delete"
 
 export default function ContentsTable({
+  editId,
   headers,
   data,
   onFavorite,
@@ -39,7 +42,8 @@ export default function ContentsTable({
   onRestoreContent,
   onDeleteContent
 }: {
-  headers: { name: string; key: keyof ContentItem }[],
+  editId?: string;
+  headers: { name: string; key: keyof ContentItem }[];
   data: ContentItem[];
   onFavorite: (item: ContentItem) => void;
   onEditContent?: (item: ContentItem) => void | Promise<void>;
@@ -49,6 +53,12 @@ export default function ContentsTable({
   onRestoreContent?: (item: ContentItem) => void | Promise<void>;
   onDeleteContent?: (id: ContentItem["id"], item: ContentItem) => void | Promise<void>;
 }) {
+  const isEditViewMode = Boolean(editId)
+  const { data: dataContent, isLoading: isLoadingContent, isFetching: isFetchingContent } = useQuery({
+    queryKey: ["content", editId],
+    queryFn: () => getContentById(editId!),
+    enabled: isEditViewMode,
+  })
   const [content, setContent] = useState<{
     openView: boolean;
     openEdit: boolean;
@@ -145,6 +155,16 @@ export default function ContentsTable({
     onPublishContent?.(item)
   }
 
+  useEffect(() => {
+    if (!!isEditViewMode) {
+      setContent((prev) => ({
+        ...prev,
+        ...(dataContent?.status === 'draft' ? { openEdit: true } : { openView: true }),
+        item: dataContent
+      }))
+    }
+  }, [isEditViewMode, dataContent])
+
   return (
     <div className="hidden md:block overflow-hidden rounded-md border">
       <Table>
@@ -205,33 +225,36 @@ export default function ContentsTable({
           </TableRow> }
         </TableBody>
       </Table>
+
+      <ContentsEdit
+        open={content.openEdit}
+        loading={isLoadingContent || isFetchingContent}
+        item={content.item}
+        onSave={onEdit}
+        onClose={() => setContent({
+          openView: false,
+          openEdit: false,
+          openArchived: false,
+          openRestore: false,
+          openDelete: false,
+          item: undefined
+        })}
+      />
+      <ContentsView
+        open={content.openView}
+        loading={isLoadingContent || isFetchingContent}
+        item={content.item}
+        onClose={() => setContent({
+          openView: false,
+          openEdit: false,
+          openArchived: false,
+          openRestore: false,
+          openDelete: false,
+          item: undefined
+        })}
+      />
       {data.length ?
         <>
-          <ContentsView
-            open={content.openView}
-            item={content.item}
-            onClose={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
-          />
-          <ContentsEdit
-            open={content.openEdit}
-            item={content.item}
-            onSave={onEdit}
-            onClose={() => setContent({
-              openView: false,
-              openEdit: false,
-              openArchived: false,
-              openRestore: false,
-              openDelete: false,
-              item: undefined
-            })}
-          />
           <ContentsArchived
             open={content.openArchived}
             item={content.item}

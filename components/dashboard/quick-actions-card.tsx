@@ -54,7 +54,7 @@ export default function DashboardQuickActionsCard({ data }: { data: DashboardQui
                 </div>
               </div>
 
-              <Link href={`/generate?actions=${action.id}`}>
+              <Link href={`/generate?action=${action.id}`}>
                 <Button
                   size="sm"
                   variant="outline">

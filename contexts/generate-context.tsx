@@ -12,6 +12,8 @@ type ContentItemContext = {
     tone?: ContentTone;
     type: ContentType;
     prompt: string;
+    targetAudience?: string;
+    keywords?: string;
   },
   isLoading: Boolean
 }

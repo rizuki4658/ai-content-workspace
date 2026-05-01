@@ -41,6 +41,21 @@ export async function getContents(params: ContentFilter = {}): Promise<GetConten
   }
 }
 
+export async function getContentById(id?: ContentItem["id"]): Promise<ContentItem | undefined> {
+
+  try {
+
+    const response = getStoredContents()
+    const result = response.data.find(item => item.id === id)
+
+    await wait(500)
+
+    return result
+  } catch (error) {
+    return undefined
+  }
+}
+
 export async function saveContent({
   items,
   status

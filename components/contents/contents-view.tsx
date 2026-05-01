@@ -10,11 +10,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { Drawer, DrawerClose, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { Button } from "@/components/ui/button"
 import { X } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 
-export default function ContentsView({ open, item, onClose }: {
+export default function ContentsView({ open, item, loading, onClose }: {
+  loading?: boolean;
   open: boolean;
   item: ContentItem | undefined;
   onClose: (open: boolean) => void
@@ -26,7 +28,7 @@ export default function ContentsView({ open, item, onClose }: {
         <DrawerContent className="max-w-none! w-screen!">
           <DrawerHeader>
             <DrawerTitle>
-              <div className="flex items-center justify-between">
+              {!loading ? <div className="flex items-center justify-between">
                 {item?.title}
                 <DrawerClose asChild>
                   <Button
@@ -36,13 +38,21 @@ export default function ContentsView({ open, item, onClose }: {
                     <X />
                   </Button>
                 </DrawerClose>
-              </div>
+              </div> : <div className="flex items-center justify-between gap-4">
+                <Skeleton className="w-full h-8" />
+                <Skeleton className="w-8 h-8" />
+              </div>}
             </DrawerTitle>
+            {!loading ? <DrawerDescription> 
+              {item?.prompt}
+            </DrawerDescription> : <Skeleton className="w-10/12 h-4" />}
           </DrawerHeader>
           <div className="flex-1 overflow-y-auto p-6">
-            <article className="whitespace-pre-wrap wrap-break-words leading-relaxed text-muted-foreground">
-              {formatContentText(item?.output || '')}
-            </article>
+            {!loading ?
+              <article className="whitespace-pre-wrap wrap-break-words leading-relaxed text-muted-foreground">
+                {formatContentText(item?.output || '')}
+              </article>
+            : <Skeleton className="w-full h-full" /> }
           </div>
         </DrawerContent>
       </Drawer>
@@ -57,7 +67,7 @@ export default function ContentsView({ open, item, onClose }: {
         className="max-w-none! w-full sm:w-[90vw] lg:w-[70vw] h-full sm:h-[90dvh] flex flex-col p-0 gap-0 overflow-hidden">
         <DialogHeader className="p-6">
           <DialogTitle>
-            <div className="flex items-center justify-between">
+            {!loading ? <div className="flex items-center justify-between">
               {item?.title}
               <DialogClose asChild>
                 <Button
@@ -67,17 +77,22 @@ export default function ContentsView({ open, item, onClose }: {
                   <X />
                 </Button>
               </DialogClose>
-            </div>
+            </div> : <div className="flex items-center justify-between gap-4">
+              <Skeleton className="w-full h-8" />
+              <Skeleton className="w-8 h-8" />
+            </div> }
           </DialogTitle>
-          <DialogDescription>
+          {!loading ? <DialogDescription> 
             {item?.prompt}
-          </DialogDescription>
+          </DialogDescription> : <Skeleton className="w-10/12 h-6" />}
         </DialogHeader>
 
         <div className="flex-1 overflow-y-auto p-6">
-          <article className="whitespace-pre-wrap wrap-break-words leading-relaxed text-muted-foreground">
-            {formatContentText(item?.output || '')}
-          </article>
+          {!loading ?
+            <article className="whitespace-pre-wrap wrap-break-words leading-relaxed text-muted-foreground">
+              {formatContentText(item?.output || '')}
+            </article>
+          : <Skeleton className="w-full h-full" /> }
         </div>
       </DialogContent>
     </Dialog>

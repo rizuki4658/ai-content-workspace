@@ -13,7 +13,16 @@ export const metadata: Metadata = {
   description: "AI Content Workspace",
 }
 
-export default function GeneratePage() {
+export default async function GeneratePage({
+  searchParams
+}: {
+  searchParams: {
+    suggest?: string | number;
+    action?: string | number;
+  }
+}) {
+  const { suggest, action } = await searchParams
+
   return (
     <GenerateContentProvider>
       <section className="space-y-6">
@@ -26,7 +35,10 @@ export default function GeneratePage() {
 
         <Suspense fallback={<GenerateSuggestTipsSkeleton />}>
           <div className="animate-in fade-in duration-500 w-full">
-            <GenerateSuggestTipsSection />
+            <GenerateSuggestTipsSection
+              suggestId={suggest}
+              actionId={action}
+            />
           </div>
         </Suspense>
       </section>

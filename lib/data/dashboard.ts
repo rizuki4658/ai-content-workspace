@@ -10,6 +10,10 @@ export const quickActions: DashboardQuickAction[] = [
     description: "Create a long-form blog draft with AI assistance.",
     cta: "Start writing",
     icon: "blog",
+    tone: 'persuasive',
+    type: 'blog_idea',
+    tags: '#blog #wordpress #writing #beginner',
+    audience: 'books addict and read addict'
   },
   {
     id: "2",
@@ -17,6 +21,10 @@ export const quickActions: DashboardQuickAction[] = [
     description: "Generate a short caption for your next campaign.",
     cta: "Generate caption",
     icon: "social",
+    tone: 'friendly',
+    type: 'social_media',
+    tags: '#reels #shorts #fyp #tiktok',
+    audience: 'teenager genz genalfa'
   },
   {
     id: "3",
@@ -24,6 +32,10 @@ export const quickActions: DashboardQuickAction[] = [
     description: "Draft a welcome or promotional email in seconds.",
     cta: "Create email",
     icon: "email",
+    tone: 'professional',
+    type: 'email',
+    tags: '#email #gmail #welcome #beginner',
+    audience: 'corporate'
   },
 ]
 

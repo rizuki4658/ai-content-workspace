@@ -20,9 +20,12 @@ import {
   DrawerTitle
 } from "@/components/ui/drawer"
 import ContentsEditForm from "./contents-edit-form"
+import { Skeleton } from "@/components/ui/skeleton"
+import ContentsEditFormSkeleton from "./skeletons/contents-edit-form-skeleton"
 
-export default function ContentsEdit({ open, item, onClose, onSave }: {
+export default function ContentsEdit({ open, item, loading, onClose, onSave }: {
   open: boolean;
+  loading?: boolean;
   item: ContentItem | undefined;
   onClose?: (open: boolean) => void;
   onSave?: (item: ContentItem) => void | Promise<void>;
@@ -52,19 +55,22 @@ export default function ContentsEdit({ open, item, onClose, onSave }: {
             <DrawerTitle>
               <div className="text-lg flex gap-1 items-center justify-between">
                 Edit
-                <span className="text-xs text-muted-foreground text-right">
-                  updated at: <br />
-                  {relativeDate(item?.updatedAt || '')}
-                </span>
+                {!loading ?
+                  <span className="text-xs text-muted-foreground text-right">
+                    updated at: <br />
+                    { relativeDate(item?.updatedAt || '') }
+                  </span>
+                : <Skeleton className="w-40 h-10" />}
               </div>
             </DrawerTitle>
           </DrawerHeader>
-          <ContentsEditForm
-            item={item}
-            onSubmit={onSubmit}
-            onCancel={onCancel}
-            FooterComponent={DrawerFooter}
-          />
+          {!loading ?
+            <ContentsEditForm
+              item={item}
+              onSubmit={onSubmit}
+              onCancel={onCancel}
+              FooterComponent={DrawerFooter}
+            /> : <ContentsEditFormSkeleton FooterComponent={DrawerFooter} /> }
         </DrawerContent>
       </Drawer>
     )
@@ -80,10 +86,12 @@ export default function ContentsEdit({ open, item, onClose, onSave }: {
           <DialogTitle>
             <div className="text-lg flex gap-1 items-center justify-between">
               Edit
-              <span className="text-xs text-muted-foreground text-right">
-                updated at: <br />
-                {relativeDate(item?.updatedAt || '')}
-              </span>
+              {!loading ?
+                <span className="text-xs text-muted-foreground text-right">
+                  updated at: <br />
+                  { relativeDate(item?.updatedAt || '') }
+                </span>
+              : <Skeleton className="w-40 h-10" />}
             </div>
           </DialogTitle>
           <DialogDescription>
@@ -91,12 +99,13 @@ export default function ContentsEdit({ open, item, onClose, onSave }: {
           </DialogDescription>
         </DialogHeader>
 
-        <ContentsEditForm
-          item={item}
-          onSubmit={onSubmit}
-          onCancel={onCancel}
-          FooterComponent={DialogFooter}
-        />
+        {!loading ?
+          <ContentsEditForm
+            item={item}
+            onSubmit={onSubmit}
+            onCancel={onCancel}
+            FooterComponent={DialogFooter}
+          /> : <ContentsEditFormSkeleton FooterComponent={DialogFooter} /> }
       </DialogContent>
     </Dialog>
   )

@@ -25,6 +25,7 @@ import ContentsRestore from "@/components/contents/contents-restore"
 import ContentsDelete from "@/components/contents/contents-delete"
 
 export default function ContentsMobileList({
+  editId,
   data,
   onFavorite,
   onEditContent,
@@ -34,6 +35,7 @@ export default function ContentsMobileList({
   onRestoreContent,
   onDeleteContent
 }: {
+  editId?: string;
   data: ContentItem[];
   onFavorite: (item: ContentItem) => void;
   onEditContent?: (item: ContentItem) => void | Promise<void>;

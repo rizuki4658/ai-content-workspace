@@ -1,7 +1,16 @@
 "use client"
 
 import type { PromptSuggestionItem } from "@/lib/types/content";
+import type { DashboardQuickAction } from "@/lib/types/dashboard";
+
+import { useEffect } from "react";
 import { useGenerateContent } from "@/contexts/generate-context"
+import { ideaTypes, ideaTones } from "@/lib/data/generate"
+import { toast } from "sonner"
+import { contentTypeColorMap, contentToneColorMap } from "@/lib/data/contents"
+import { generateId } from "@/lib/utils/generator-id"
+import { fetchQuicActionById, fetchSuggestedPromptById } from "@/lib/api/generate-content";
+import { useQuery } from "@tanstack/react-query";
 
 import { BrainCircuit, FileUp, Sparkles, Volume2 } from "lucide-react";
 
@@ -19,12 +28,24 @@ import {
 } from "@/components/ui/tooltip"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ideaTypes, ideaTones } from "@/lib/data/generate"
-import { toast } from "sonner"
-import { contentTypeColorMap, contentToneColorMap } from "@/lib/data/contents"
-import { generateId } from "@/lib/utils/generator-id"
 
-export default function GenerateSuggestedPromptsCard({ data }: { data: PromptSuggestionItem[] }) {
+export default function GenerateSuggestedPromptsCard({ data, suggestId, actionId }: {
+  data: PromptSuggestionItem[];
+  actionId?: string | number;
+  suggestId?: string | number
+}) {
+  const isAlreadySuggested = Boolean(suggestId)
+  const isQuickAction = Boolean(actionId)
+  const { data: dataPrompt } = useQuery<PromptSuggestionItem | undefined>({
+    queryKey: ['generate-suggest-prompt-by-id', suggestId],
+    queryFn: () => fetchSuggestedPromptById(suggestId!),
+    enabled: isAlreadySuggested
+  })
+  const { data: dataAction } = useQuery<DashboardQuickAction | undefined>({
+    queryKey: ['generate-action-by-id', actionId],
+    queryFn: () => fetchQuicActionById(actionId!),
+    enabled: isQuickAction
+  })
   const { content, setContent } = useGenerateContent()
 
   const onFillsUp = (e: PromptSuggestionItem) => {
@@ -36,7 +57,9 @@ export default function GenerateSuggestedPromptsCard({ data }: { data: PromptSug
           title: e.label || '',
           tone: e.tone || undefined,
           type: e.type || '',
-          prompt: e.prompt || ''
+          prompt: e.prompt || '',
+          targetAudience: e?.targetAudience || '',
+          keywords: e?.keywords || ''
         },
         isLoading: false
       })
@@ -45,6 +68,27 @@ export default function GenerateSuggestedPromptsCard({ data }: { data: PromptSug
       toast.error("Failed to fill form!", { position: "top-center", duration: 1000 })
     }
   }
+
+  useEffect(() => {
+    if (!!isAlreadySuggested && dataPrompt) {
+      onFillsUp(dataPrompt)
+    }
+  }, [dataPrompt, isAlreadySuggested])
+
+  useEffect(() => {
+    if (!!isQuickAction && dataAction) {
+      onFillsUp({
+        id: actionId?.toString() || 'unknown',
+        label: dataAction?.title || '',
+        tone: dataAction?.tone || undefined,
+        type: dataAction?.type || 'blog_idea',
+        prompt: dataAction?.description || '',
+        targetAudience: dataAction?.audience || '',
+        keywords: dataAction?.tags || ''
+      })
+    }
+  }, [isQuickAction, dataAction])
+
   return (
     <Card className="rounded-sm">
       <CardHeader>
