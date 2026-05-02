@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   description: "AI Content Workspace",
 }
 
-export default function DashboardPage() {
+export default function SettingsPage() {
   return (
     <section className="space-y-6">
       <PageTitle title="Settings" description="Manage your preferences and workspace settings." />

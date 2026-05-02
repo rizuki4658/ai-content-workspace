@@ -70,7 +70,7 @@ export default function AvatarPopover() {
               <HireMeDialog />
             </PopoverClose>
             <PopoverClose asChild>  
-              <Link href="/settings">
+              <Link href="/my-settings">
                 <Button
                   type="button"
                   variant="ghost"
