@@ -31,6 +31,7 @@ export type ContentItem = {
   createdAt: string;
   updatedAt: string;
   keywords?: string;
+  userEmail?: string;
 };
 
 export type PromptSuggestionItem = {

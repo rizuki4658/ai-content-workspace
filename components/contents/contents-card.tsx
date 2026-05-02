@@ -134,6 +134,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       updates: {
         ...item,
         favorite: !item.favorite,
+        userEmail: localStorage.getItem("currentUserEmail") || undefined,
         updatedAt: new Date().toISOString()
       },
       type: 'favorite',
@@ -148,6 +149,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
         ...item,
         title: item.title,
         output: item.output,
+        userEmail: localStorage.getItem("currentUserEmail") || undefined,
         status: item.status,
         updatedAt: new Date().toISOString()
       },
@@ -163,6 +165,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       updates: {
         ...item,
         status: 'ready',
+        userEmail: localStorage.getItem("currentUserEmail") || undefined,
         updatedAt: new Date().toISOString()
       },
       type: 'status',
@@ -177,6 +180,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       updates: {
         ...item,
         status: 'published',
+        userEmail: localStorage.getItem("currentUserEmail") || undefined,
         updatedAt: new Date().toISOString()
       },
       type: 'status',
@@ -191,6 +195,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       updates: {
         ...item,
         status: 'archived',
+        userEmail: localStorage.getItem("currentUserEmail") || undefined,
         updatedAt: new Date().toISOString()
       },
       type: 'status',
@@ -205,6 +210,7 @@ export default function ContentsMain({ editId } : { editId?: string }) {
       updates: {
         ...item,
         status: 'draft',
+        userEmail: localStorage.getItem("currentUserEmail") || undefined,
         updatedAt: new Date().toISOString()
       },
       type: 'status',

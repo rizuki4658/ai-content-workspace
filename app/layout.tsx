@@ -5,6 +5,7 @@ import "./globals.css";
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "sonner"
 import QueryProvider from "@/providers/query-provider"
+import { DatabaseSeeder } from "@/providers/db-seeder"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <DatabaseSeeder />
         <TooltipProvider>
           <QueryProvider>
             {children}

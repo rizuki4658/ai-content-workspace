@@ -287,7 +287,7 @@ export default function NotificationsCard() {
                     disabled={isBulkLoading}
                     onClick={onAllReads}
                   >
-                    <MailOpen />
+                    <Mail />
                     Mark all as read
                   </Button>
                 ) : (
@@ -296,7 +296,7 @@ export default function NotificationsCard() {
                     disabled={isBulkLoading}
                     onClick={onAllUnreads}
                   >
-                    <Mail />
+                    <MailOpen />
                     Mark all as unread
                   </Button>
                 )

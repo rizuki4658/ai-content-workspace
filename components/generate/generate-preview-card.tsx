@@ -104,7 +104,8 @@ export default function GeneratePreviewCard() {
         items: [
           ...[{
             ...content.data,
-            status
+            status,
+            userEmail: localStorage.getItem('currentUserEmail') || undefined
           }],
           ...response.data
         ],

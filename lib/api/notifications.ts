@@ -1,42 +1,23 @@
 // lib/api/notification.ts
-
+import { db } from "@/lib/db"
 import type {
   CreateNotificationPayload,
   NotificationItem,
   NotificationsPaginatedResponse
 } from "@/lib/types/notifications"
-import { generateId } from "@/lib/utils/generator-id"
-
-const STORAGE_KEY = process.env.NOTIFICATIONS_STORAGE_KEY || 'ai-content-workspace-notifications'
-
-const wait = (ms: number) =>
-  new Promise((resolve) => setTimeout(resolve, ms))
-
-function getStoredNotifications(): NotificationItem[] {
-  if (typeof window === "undefined") return []
-
-  const raw = localStorage.getItem(STORAGE_KEY)
-
-  if (!raw) return []
-
-  try {
-    return JSON.parse(raw)
-  } catch {
-    return []
-  }
-}
-
-function setStoredNotifications(notifications: NotificationItem[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications))
-}
 
 export async function getNotifications(): Promise<NotificationItem[]> {
-  await wait(300)
+  try {
+    const notifications = await db.notifications
+      .reverse()
+      .limit(50)
+      .toArray()
 
-  return getStoredNotifications().sort(
-    (a, b) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  ).slice(0, 50)
+    return notifications
+  } catch (error) {
+    console.error("Failed to fetch notifications:", error)
+    return []
+  }
 }
 
 export async function getNotificationsPaginated({
@@ -44,153 +25,138 @@ export async function getNotificationsPaginated({
   limit = 10,
   search = "",
 }: {
-  page?: number
-  limit?: number
-  search?: string
+  page?: number;
+  limit?: number;
+  search?: string;
 }): Promise<NotificationsPaginatedResponse> {
-  await wait(300)
+  try {
+    const normalizedSearch = search.trim().toLowerCase()
+    const offset = (page - 1) * limit
 
-  const normalizedSearch = search.trim().toLowerCase()
+    let collection = db.notifications.toCollection()
 
-  const notifications = getStoredNotifications()
-    .filter((notification) => {
-      if (!normalizedSearch) return true
+    if (normalizedSearch) {
+      collection = db.notifications.filter((notification) => {
+        return (
+          notification.title.toLowerCase().includes(normalizedSearch) ||
+          notification.message.toLowerCase().includes(normalizedSearch) ||
+          notification.type.toLowerCase().includes(normalizedSearch)
+        )
+      })
+    }
 
-      return (
-        notification.title.toLowerCase().includes(normalizedSearch) ||
-        notification.message.toLowerCase().includes(normalizedSearch) ||
-        notification.type.toLowerCase().includes(normalizedSearch)
-      )
-    })
-    .sort(
-      (a, b) =>
-        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    )
+    const total = await collection.count()
+    const totalPages = Math.ceil(total / limit) || 1
+    const safePage = Math.min(Math.max(page, 1), totalPages)
 
-  const total = notifications.length
-  const totalPages = Math.ceil(total / limit) || 1
+    const allSorted = await collection.reverse().sortBy("createdAt")
+    const data = allSorted.slice(offset, offset + limit)
 
-  const safePage = Math.min(Math.max(page, 1), totalPages)
+    const from = total === 0 ? 0 : offset + 1
+    const to = Math.min(offset + limit, total)
 
-  const start = (safePage - 1) * limit
-  const end = start + limit
-
-  const data = notifications.slice(start, end)
-
-  return {
-    data,
-    meta: {
-      page: safePage,
-      limit,
-      total,
-      totalPages,
-      from: total === 0 ? 0 : start + 1,
-      to: Math.min(end, total),
-      hasPrev: safePage > 1,
-      hasNext: safePage < totalPages,
-    },
+    return {
+      data,
+      meta: {
+        page: safePage,
+        limit,
+        total,
+        totalPages,
+        from,
+        to,
+        hasPrev: safePage > 1,
+        hasNext: safePage < totalPages,
+      },
+    }
+  } catch (error) {
+    return {
+      data: [],
+      meta: {
+        page: 1,
+        limit,
+        total: 0,
+        totalPages: 1,
+        from: 0,
+        to: 0,
+        hasPrev: false,
+        hasNext: false,
+      },
+    }
   }
 }
 
 export async function createNotification(
   payload: CreateNotificationPayload
 ): Promise<NotificationItem> {
-  await wait(300)
+  try {
+    // Kita buat objek tanpa ID dulu
+    const newNotification: Omit<NotificationItem, 'id'> = {
+      ...payload,
+      isRead: false,
+      createdAt: new Date().toISOString(),
+    }
 
-  const notifications = getStoredNotifications()
+    const id = await db.notifications.add(newNotification as NotificationItem)
 
-  const notification: NotificationItem = {
-    id: generateId(),
-    ...payload,
-    isRead: false,
-    createdAt: new Date().toISOString(),
+    return { 
+      ...newNotification,
+      id 
+    } as NotificationItem;
+    
+  } catch (error) {
+    console.error("Failed to create notification:", error)
+    throw error
   }
-
-  setStoredNotifications([notification, ...notifications])
-
-  return notification
 }
 
 export async function markNotificationAsRead(
   id: NotificationItem["id"]
 ): Promise<NotificationItem | undefined> {
-  await wait(300)
-
-  const notifications = getStoredNotifications()
-
-  const updatedNotifications = notifications.map((notification) =>
-    notification.id === id
-      ? {
-          ...notification,
-          isRead: true,
-        }
-      : notification
-  )
-
-  setStoredNotifications(updatedNotifications)
-
-  return updatedNotifications.find((notification) => notification.id === id)
+  try {
+    // update() hanya mengubah field yang ditentukan
+    await db.notifications.update(id, { isRead: true })
+    return await db.notifications.get(id)
+  } catch (error) {
+    return undefined
+  }
 }
 
 export async function markAllNotificationsAsRead(): Promise<NotificationItem[]> {
-  await wait(300)
-
-  const notifications = getStoredNotifications()
-
-  const updatedNotifications = notifications.map((notification) => ({
-    ...notification,
-    isRead: true,
-  }))
-
-  setStoredNotifications(updatedNotifications)
-
-  return updatedNotifications
+  try {
+    // modify() sangat sakti untuk update massal tanpa load semua data ke RAM
+    await db.notifications.toCollection().modify({ isRead: true })
+    return await db.notifications.toArray()
+  } catch (error) {
+    return []
+  }
 }
 
 export async function markNotificationAsUnread(
   id: NotificationItem["id"]
 ): Promise<NotificationItem | undefined> {
-  await wait(300)
-
-  const notifications = getStoredNotifications()
-
-  const updatedNotifications = notifications.map((notification) =>
-    notification.id === id
-      ? {
-          ...notification,
-          isRead: false,
-        }
-      : notification
-  )
-
-  setStoredNotifications(updatedNotifications)
-
-  return updatedNotifications.find((notification) => notification.id === id)
+  try {
+    await db.notifications.update(id, { isRead: false })
+    return await db.notifications.get(id)
+  } catch (error) {
+    return undefined
+  }
 }
 
 export async function markAllNotificationsAsUnread(): Promise<NotificationItem[]> {
-  await wait(300)
-
-  const notifications = getStoredNotifications()
-
-  const updatedNotifications = notifications.map((notification) => ({
-    ...notification,
-    isRead: false,
-  }))
-
-  setStoredNotifications(updatedNotifications)
-
-  return updatedNotifications
+  try {
+    await db.notifications.toCollection().modify({ isRead: false })
+    return await db.notifications.toArray()
+  } catch (error) {
+    return []
+  }
 }
 
 export async function deleteNotification(
   id: NotificationItem["id"]
 ): Promise<void> {
-  await wait(300)
-
-  const notifications = getStoredNotifications()
-
-  setStoredNotifications(
-    notifications.filter((notification) => notification.id !== id)
-  )
+  try {
+    await db.notifications.delete(id)
+  } catch (error) {
+    console.error("Failed to delete notification:", error)
+  }
 }

@@ -7,6 +7,7 @@ export type NotificationType =
   | "content_edited"
   | "content_deleted"
   | "content_published"
+  | "greating_notification"
 
 export type NotificationItem = {
   id: string
