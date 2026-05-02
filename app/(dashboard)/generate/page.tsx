@@ -4,7 +4,6 @@ import type { Metadata } from "next"
 import GenerateFormPreviewSection from "@/components/generate/sections/generate-form-preview-section"
 import GenerateSuggestTipsSection from "@/components/generate/sections/generate-suggest-tips-section"
 import GenerateSuggestTipsSkeleton from "@/components/generate/skeletons/generate-suggest-tips-skeleton"
-import { GenerateContentProvider } from "@/contexts/generate-context"
 
 import PageTitle from "@/components/shared/page-title"
 
@@ -24,25 +23,22 @@ export default async function GeneratePage({
   const { suggest, action } = await searchParams
 
   return (
-    <GenerateContentProvider>
-      <section className="space-y-6">
-        <PageTitle
-          title="Generate"
-          description="Create blog posts, captions, emails, and more with AI-assisted workflows."
-        />
+    <section className="space-y-6">
+      <PageTitle
+        title="Generate"
+        description="Create blog posts, captions, emails, and more with AI-assisted workflows."
+      />
 
-        <GenerateFormPreviewSection />
+      <GenerateFormPreviewSection />
 
-        <Suspense fallback={<GenerateSuggestTipsSkeleton />}>
-          <div className="animate-in fade-in duration-500 w-full">
-            <GenerateSuggestTipsSection
-              suggestId={suggest}
-              actionId={action}
-            />
-          </div>
-        </Suspense>
-      </section>
-
-    </GenerateContentProvider>
+      <Suspense fallback={<GenerateSuggestTipsSkeleton />}>
+        <div className="animate-in fade-in duration-500 w-full">
+          <GenerateSuggestTipsSection
+            suggestId={suggest}
+            actionId={action}
+          />
+        </div>
+      </Suspense>
+    </section>
   )
 }

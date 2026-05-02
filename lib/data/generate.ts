@@ -1,4 +1,5 @@
 import type { ContentType, ContentTone, ContentStatus, PromptSuggestionItem } from "@/lib/types/content"
+import { SettingPrefrenceFormSchema } from "../validations/settings"
 
 export const ideaTypes: Record<ContentType, string> = {
   "blog_idea": "Blog Idea",
@@ -21,6 +22,12 @@ export const ideaStatus: Record<ContentStatus, string> = {
   "ready": "Ready",
   "published": "Published",
   "archived": "Archived"
+}
+
+export const ideaThemes: Record<SettingPrefrenceFormSchema['theme'], string> = {
+  "system": "System",
+  "dark": "Dark",
+  "light": "Light",
 }
 
 export const promptSuggestions: PromptSuggestionItem[] = [

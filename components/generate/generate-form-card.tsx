@@ -1,12 +1,10 @@
 "use client"
 
-import { useEffect } from "react"
 import { toast } from "sonner"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { generateContentFormSchema, type GenerateContentFormValues } from "@/lib/validations/contents"
 import { generateContent } from "@/lib/api/generate-content"
-// import { generateContent } from "@/lib/server/generate"
 import { ideaTypes, ideaTones } from "@/lib/data/generate"
 import { useGenerateContent } from "@/contexts/generate-context"
 import { useNotification } from "@/contexts/notification-context"
@@ -50,26 +48,47 @@ export default function GenerateFormCard({
 }: {
   onReset?: () => void
 }) {
-  const { notifyContentGenerated, notifyContentFailedGenerated } = useNotification()
   const { content, setContent } = useGenerateContent()
-  const { control, handleSubmit, reset, formState: { errors, isSubmitting } } = useForm<GenerateContentFormValues>({
+
+  const initialValues: GenerateContentFormValues = content.form
+    ? {
+        type: content.form.type || defaultValues.type,
+        title: content.form.title || defaultValues.title,
+        prompt: content.form.prompt || defaultValues.prompt,
+        tone: content.form.tone || defaultValues.tone,
+        targetAudience: content.form.targetAudience || defaultValues.targetAudience,
+        keywords: content.form.keywords || defaultValues.keywords,
+      }
+    : defaultValues
+
+  return (
+    <GenerateFormCardInner
+      key={content.form?.uniqueId}
+      initialValues={initialValues}
+      content={content}
+      setContent={setContent}
+      onReset={onReset}
+    />
+  )
+}
+
+function GenerateFormCardInner({
+  initialValues,
+  content,
+  setContent,
+  onReset,
+}: {
+  initialValues: GenerateContentFormValues
+  content: ReturnType<typeof useGenerateContent>["content"]
+  setContent: ReturnType<typeof useGenerateContent>["setContent"]
+  onReset?: () => void
+}) {
+  const { notifyContentGenerated, notifyContentFailedGenerated } = useNotification()
+  const { control, handleSubmit, reset, formState: { isSubmitting } } = useForm<GenerateContentFormValues>({
     resolver: zodResolver(generateContentFormSchema),
-    defaultValues,
+    defaultValues: initialValues,
     mode: "onSubmit"
   })
-
-  useEffect(() => {
-    if (content.form) {
-      reset({
-        type: content.form.type || "blog_idea",
-        title: content.form.title || "",
-        prompt: content.form.prompt || "",
-        tone: content.form.tone || "professional",
-        targetAudience: content.form?.targetAudience || "",
-        keywords: content.form?.keywords || ""
-      })
-    }
-  }, [content.form?.uniqueId, reset])
 
   const onSubmit = async (values: GenerateContentFormValues) => {
     setContent({
@@ -80,7 +99,7 @@ export default function GenerateFormCard({
     try {
       const result = await generateContent(values)
 
-      toast.success(`“${result.title}” is ready.`, {
+      toast.success(`"${result.title}" is ready.`, {
         duration: 1000,
         position: "top-center"
       })

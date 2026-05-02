@@ -8,6 +8,8 @@ import PageContainer from "@/components/layout/page-container";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import DraggableCTA from "@/components/shared/cta-button";
 import { NotificationProvider } from "@/contexts/notification-context";
+import { GenerateContentProvider } from "@/contexts/generate-context";
+import { ThemeProvider } from "@/contexts/theme-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,22 +33,26 @@ export default function DashboardLayout({
 }>) {
   return (
     <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-      <SidebarProvider>
-        <div className="flex min-h-screen">
-          <AppSidebar />
-          <div className="flex flex-1 flex-col">
-            <AppTopbar />
-            <PageContainer>
-              <>
-                <DraggableCTA />
-                <NotificationProvider>
-                  {children}
-                </NotificationProvider>
-              </>
-            </PageContainer>
+      <ThemeProvider>
+        <SidebarProvider>
+          <div className="flex min-h-screen">
+            <AppSidebar />
+            <div className="flex flex-1 flex-col">
+              <AppTopbar />
+              <PageContainer>
+                <>
+                  <DraggableCTA />
+                  <NotificationProvider>
+                    <GenerateContentProvider>
+                      {children}
+                    </GenerateContentProvider>
+                  </NotificationProvider>
+                </>
+              </PageContainer>
+            </div>
           </div>
-        </div>
-      </SidebarProvider>
+        </SidebarProvider>
+      </ThemeProvider>
     </div>
   );
 }
