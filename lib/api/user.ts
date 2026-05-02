@@ -85,7 +85,7 @@ export async function loginOrRegister(email: string, name?: string) {
         name: name ? name : cleanEmail.split('@')[0],
         username: undefined,
         bio: undefined,
-        image: `https://api.dicebear.com/7.x/initials/svg?seed=${cleanEmail}`,
+        image: '',
         lastLogin: new Date().toISOString()
       })
       toast.success("Account created successfully!", { position: 'top-center' })
@@ -94,7 +94,7 @@ export async function loginOrRegister(email: string, name?: string) {
     localStorage.setItem("currentUserEmail", cleanEmail)
     localStorage.setItem("isLoggedIn", "true")
 
-   window.location.href = "/dashboard"
+    window.location.href = "/dashboard"
 
     return { success: true }
   } catch (error) {

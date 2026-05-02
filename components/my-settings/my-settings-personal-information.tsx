@@ -9,9 +9,9 @@ import {
   type MySettingsFormSchema,
 } from "@/lib/validations/my-settings"
 
-import { Button } from "../ui/button"
-import { Field, FieldError, FieldLabel } from "../ui/field"
-import { Input } from "../ui/input"
+import { Button } from "@/components/ui/button"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
 import { User } from "@/lib/types/user"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { updateUserProfile } from "@/lib/api/user"

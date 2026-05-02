@@ -13,10 +13,55 @@ import {
   PopoverClose
 } from "@/components/ui/popover"
 import HireMeDialog from "./hire-me-dialog"
+import { getUserProfile, logoutUser } from "@/lib/api/user"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { User } from "@/lib/types/user"
+
+// Terima props sebagai objek { data }
+function AvatarBadge({ data }: { data: User | undefined }) {
+  const cleanName = (name: string) => {
+    if (!name) return "??"
+
+    const words = name.trim().split(/\s+/)
+
+    if (!words.length || words[0] === "") return "??"
+
+    if (words.length >= 2) return `${words[0][0]}${words[1][0]}`.toUpperCase()
+
+    const word = words[0]
+    if (word.length === 1) return word.toUpperCase()
+
+    return word.substring(0, 2).toUpperCase()
+  }
+
+  return data?.email ? (
+    <Avatar className="h-9 w-9">
+      <AvatarImage src={data.image} alt={data.name} />
+      <AvatarFallback>{cleanName(data.name || data.email)}</AvatarFallback>
+    </Avatar>
+  ) : (
+    <Avatar className="h-9 w-9">
+      <AvatarFallback>??</AvatarFallback>
+    </Avatar>
+  )
+}
+
 
 export default function AvatarPopover() {
-  const onLogout = () => {
-    console.log("logout clicked")
+  const queryClient = useQueryClient()
+  const { data, isLoading, isFetching, isError } = useQuery<User | undefined>({
+    queryKey: ['user'],
+    queryFn: () => getUserProfile()
+  })
+
+  const onLogout = async () => {
+    try {
+      queryClient.clear() 
+
+      await logoutUser()
+    } catch {
+      console.error("Logout failed")
+    }
   }
 
   return (
@@ -29,25 +74,19 @@ export default function AvatarPopover() {
             className="h-10 w-10 rounded-full"
             aria-label="Open account menu"
           >
-            <Avatar className="h-9 w-9">
-              <AvatarImage src="https://github.com/shadcn.png" alt="Rizki Khair" />
-              <AvatarFallback>RK</AvatarFallback>
-            </Avatar>
+            <AvatarBadge data={data} />
           </Button>
         </PopoverTrigger>
 
         <PopoverContent align="center" className="w-60 p-3">
           <div className="border-b px-2 pb-3 pt-1">
             <div className="flex items-center gap-3">
-              <Avatar className="h-10 w-10">
-                <AvatarImage src="https://github.com/shadcn.png" alt="Rizki Khair" />
-                <AvatarFallback>RK</AvatarFallback>
-              </Avatar>
+              <AvatarBadge data={data} />
 
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-gray-700 dark:text-white">Rizki Khair</p>
+                <p className="truncate text-sm font-semibold text-gray-700 dark:text-white">{data?.name}</p>
                 <p className="truncate text-xs text-muted-foreground">
-                  Frontend Engineer
+                  {data?.bio || '-'}
                 </p>
               </div>
             </div>

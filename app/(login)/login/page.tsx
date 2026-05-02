@@ -6,10 +6,17 @@ export const metadata: Metadata = {
   description: "AI Content Workspace",
 }
 
+import LoginForm from "@/components/auth/login-form"
+import LoginFormSkeleton from "@/components/auth/login-form-skeleton"
+
 export default function LoginPage() {
   return (
     <section className="space-y-6">
-      Login
+      <Suspense fallback={<LoginFormSkeleton />}>
+        <div className="animate-in fade-in duration-500">
+          <LoginForm />
+        </div>
+      </Suspense>
    </section>
   )
 }

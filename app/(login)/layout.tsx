@@ -30,11 +30,9 @@ export default function DashboardLayout({
       <ThemeProvider>
           <div className="flex min-h-screen">
             <div className="flex flex-1 flex-col">
-              <PageContainer>
-                <>
-                  {children}
-                </>
-              </PageContainer>
+              <>
+                {children}
+              </>
             </div>
           </div>
       </ThemeProvider>

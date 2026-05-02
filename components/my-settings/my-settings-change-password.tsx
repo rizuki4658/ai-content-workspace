@@ -27,7 +27,7 @@ import {
   FieldGroup,
 } from "@/components/ui/field"
 import { KeyRound, Loader2 } from "lucide-react"
-import { Checkbox } from "../ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox"
 
 export default function MySettingsChangePassword() {
   const [open, setOpen] = useState(false)

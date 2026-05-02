@@ -4,8 +4,8 @@ import {
   Card,
   CardContent,
   CardHeader,
-} from "../ui/card"
-import { Button } from "../ui/button"
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react"
 import MySettingsChangePassword from "./my-settings-change-password"
 import MySettingsDeleteAccount from "./my-settings-delete-account"
