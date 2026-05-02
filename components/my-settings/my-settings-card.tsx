@@ -17,8 +17,10 @@ import { User } from "@/lib/types/user"
 import MySettingsAvatarSkeleton from "./skeletons/my-settings-avatar-skeleton"
 import MySettingsPersonalInformationSkeleton from "./skeletons/my-settings-personal-information-skeleton"
 import MySettingsButtonSkeleton from "./skeletons/my-settings-change-password-skeleton"
+import { useRouter } from "next/navigation"
 
 export default function MySettingsCard() {
+  const router = useRouter()
   const queryClient = useQueryClient()
   const { data, isLoading, isFetching, isError } = useQuery<User | undefined>({
     queryKey: ['user'],
@@ -30,6 +32,7 @@ export default function MySettingsCard() {
       queryClient.clear() 
 
       await logoutUser()
+      router.push('/login')
     } catch {
       console.error("Logout failed")
     }

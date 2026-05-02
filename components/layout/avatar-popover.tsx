@@ -16,6 +16,7 @@ import HireMeDialog from "./hire-me-dialog"
 import { getUserProfile, logoutUser } from "@/lib/api/user"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { User } from "@/lib/types/user"
+import { useRouter } from "next/navigation"
 
 // Terima props sebagai objek { data }
 function AvatarBadge({ data }: { data: User | undefined }) {
@@ -48,8 +49,9 @@ function AvatarBadge({ data }: { data: User | undefined }) {
 
 
 export default function AvatarPopover() {
+  const router = useRouter()
   const queryClient = useQueryClient()
-  const { data, isLoading, isFetching, isError } = useQuery<User | undefined>({
+  const { data } = useQuery<User | undefined>({
     queryKey: ['user'],
     queryFn: () => getUserProfile()
   })
@@ -59,6 +61,7 @@ export default function AvatarPopover() {
       queryClient.clear() 
 
       await logoutUser()
+      router.push('/login')
     } catch {
       console.error("Logout failed")
     }

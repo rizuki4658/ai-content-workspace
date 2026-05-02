@@ -1,79 +1,118 @@
 "use client"
 
-import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useMutation } from "@tanstack/react-query"
 import * as z from "zod"
-import { loginOrRegister } from "@/lib/api/user"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Loader2, LogIn, Mail } from "lucide-react"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
 import Link from "next/link"
+import { Loader2, LogIn, Mail } from "lucide-react"
+
+import { loginOrRegister } from "@/lib/api/user"
+
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group"
+import { useRouter } from "next/navigation"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter your email!" }),
 })
 
-export default function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false)
+type LoginFormValues = z.infer<typeof loginSchema>
 
-  const form = useForm<z.infer<typeof loginSchema>>({
+export default function LoginForm() {
+  const router = useRouter()
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "" },
+    defaultValues: {
+      email: "",
+    },
   })
 
-  async function onSubmit(values: z.infer<typeof loginSchema>) {
-    setIsLoading(true)
-    try {
-      await loginOrRegister(values.email)
-    } catch (error) {
+  const loginMutation = useMutation({
+    mutationFn: async (values: LoginFormValues) => {
+      return loginOrRegister(values.email)
+    },
+    onError: (error) => {
       console.error(error)
-    } finally {
-      setIsLoading(false)
+    },
+  })
+
+  const isLoading = form.formState.isSubmitting || loginMutation.isPending
+
+  async function onSubmit(values: LoginFormValues) {
+    if (loginMutation.isPending) return
+
+    try {
+      await loginMutation.mutateAsync(values)
+      router.push('/dashboard')
+    } catch (error) {
+      console.log('Failed to login')
     }
   }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-md py-10 sm:px-8 px-4">
+      <Card className="w-full max-w-md px-4 py-10 sm:px-8">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold tracking-tight flex flex-col items-center justify-center gap-4">
-            <div className="shadow-2xl rounded-xl w-16 h-16 border border-muted">
-              <img src="/logo/logo3.png" />
+          <CardTitle className="flex flex-col items-center justify-center gap-4 text-2xl font-bold tracking-tight">
+            <div className="h-16 w-16 rounded-xl border border-muted shadow-2xl">
+              <img src="/logo/logo3.png" alt="AI Content Workspace logo" />
             </div>
-            <h1 className="font-semibold text-xl">
+
+            <h1 className="text-xl font-semibold">
               AI Content Workspace
             </h1>
           </CardTitle>
+
           <CardDescription className="text-center text-xs">
             Enter your email to access your local workspace.
           </CardDescription>
         </CardHeader>
+
         <CardContent>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="mt-4 space-y-4"
+          >
             <div className="space-y-2">
               <InputGroup className="py-5!">
                 <InputGroupAddon>
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-zinc-500" />
+                  <Mail className="absolute top-3 left-3 h-4 w-4 text-zinc-500" />
                 </InputGroupAddon>
+
                 <InputGroupInput
                   {...form.register("email")}
                   className="pl-8!"
                   placeholder="name@example.com"
+                  disabled={isLoading}
                 />
               </InputGroup>
-              {form.formState.errors.email && (
-                <p className="text-xs text-red-500">{form.formState.errors.email.message}</p>
-              )}
+
+              {form.formState.errors.email ? (
+                <p className="text-xs text-red-500">
+                  {form.formState.errors.email.message}
+                </p>
+              ) : null}
             </div>
+
             <div className="space-y-2">
-              <Button 
-                type="submit" 
-                className="w-full h-10"
+              <Button
+                type="submit"
+                className="h-10 w-full"
                 size="lg"
-                disabled={isLoading}>
+                disabled={isLoading}
+              >
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -86,24 +125,32 @@ export default function LoginForm() {
                   </>
                 )}
               </Button>
-              <div className="flex items-center w-full justify-center gap-2">
+
+              <div className="flex w-full items-center justify-center gap-2">
                 <hr className="flex-1" />
                 <p className="text-muted-foreground">or</p>
                 <hr className="flex-1" />
               </div>
-              <Link href="/register">
-                <Button 
-                  type="button"
-                  variant="outline"
-                  className="w-full h-10"
-                  size="lg"
-                  disabled={isLoading}>
+
+              <Button
+                asChild
+                type="button"
+                variant="outline"
+                className="h-10 w-full"
+                size="lg"
+                disabled={isLoading}
+              >
+                <Link
+                  href="/register"
+                  aria-disabled={isLoading}
+                  className={isLoading ? "pointer-events-none" : undefined}
+                >
                   Register
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </div>
           </form>
-          
+
           <div className="mt-6 text-center text-xs text-zinc-500">
             <p>No password required. Your data stays in this browser.</p>
           </div>

@@ -11,8 +11,10 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Loader2, Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function MySettingsDeleteAccount() {
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -20,10 +22,10 @@ export default function MySettingsDeleteAccount() {
     setIsLoading(true)
 
     try {
-      console.log("Delete account")
       await new Promise((resolve) => setTimeout(resolve, 1500))
 
       setOpen(false)
+      router.push('/login')
     } catch (error) {
       console.error(error)
     } finally {

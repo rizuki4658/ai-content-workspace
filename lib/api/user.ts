@@ -63,9 +63,9 @@ export async function updateImageProfile(payload: { email: string; image: string
 
 export async function logoutUser() {
   await db.userProfile.clear()
+  await wait(1000)
   localStorage.removeItem("currentUserEmail")
   localStorage.removeItem("isLoggedIn")
-  window.location.href = "/login"
 }
 
 export async function loginOrRegister(email: string, name?: string) {
@@ -90,11 +90,10 @@ export async function loginOrRegister(email: string, name?: string) {
       })
       toast.success("Account created successfully!", { position: 'top-center' })
     }
+    await wait(1500)
 
     localStorage.setItem("currentUserEmail", cleanEmail)
     localStorage.setItem("isLoggedIn", "true")
-
-    window.location.href = "/dashboard"
 
     return { success: true }
   } catch (error) {
@@ -121,16 +120,14 @@ export async function deleteAccount() {
       db.userPreference.clear()
     ])
 
+    await wait(1000)
+
     localStorage.removeItem("currentUserEmail")
     localStorage.removeItem("isLoggedIn")
 
     toast.success("Account and all data have been permanently deleted", { 
       position: 'top-center' 
     })
-
-    setTimeout(() => {
-      window.location.href = "/login"
-    }, 1500)
 
     return { success: true }
   } catch (error) {
