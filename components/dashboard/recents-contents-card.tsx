@@ -1,6 +1,6 @@
 import type { ContentItem } from "@/lib/types/content"
 import { relativeDate } from "@/lib/utils/date-format"
-import { renderBadge } from "../contents/contents-helper"
+import { renderBadge } from "@/components/contents/contents-helper"
 
 import { FileText } from "lucide-react"
 
@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
 export default function DashboardRecentsContentsCard({ data }: { data: ContentItem[] }) {
-  return (
+  return data.length ? (
     <Card className="rounded-sm">
       <CardHeader>
         <div className="flex items-center justify-between gap-4">
@@ -69,5 +69,5 @@ export default function DashboardRecentsContentsCard({ data }: { data: ContentIt
         ))}
       </CardContent>
     </Card>
-  )
+  ) : null
 }

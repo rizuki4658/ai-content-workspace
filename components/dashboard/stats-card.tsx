@@ -1,7 +1,7 @@
 import type { DashboardStat } from "@/lib/types/dashboard"
 import { statIconMap } from "@/lib/utils/dashboard-icon-maps"
 
-import { FileText } from "lucide-react"
+import { FileText, FileX, PenOff } from "lucide-react"
 import {
   Card,
   CardHeader,
@@ -12,7 +12,7 @@ import {
 
 export default function DashboardStatsCard({ data }: { data: DashboardStat }) {
   const Icon =
-    statIconMap[data.icon as keyof typeof statIconMap] || FileText
+    data.value ? statIconMap[data.icon as keyof typeof statIconMap] || FileText : data.icon === 'file' ? FileX : PenOff
 
   const trendClass =
     data.trendType === "positive"
@@ -32,7 +32,7 @@ export default function DashboardStatsCard({ data }: { data: DashboardStat }) {
           </div>
 
           <span className={`text-xs font-medium ${trendClass}`}>
-            {data.trend}
+            {data.value ? data.trend : '-'}
           </span>
         </div>
 
@@ -42,7 +42,7 @@ export default function DashboardStatsCard({ data }: { data: DashboardStat }) {
           </CardDescription>
 
           <CardTitle className="mt-2 text-3xl font-bold">
-            {data.value}
+            {data.value || '-'}
           </CardTitle>
         </div>
       </CardHeader>
@@ -56,15 +56,18 @@ export default function DashboardStatsCard({ data }: { data: DashboardStat }) {
             <span className="text-muted-foreground">
               {detail.label}
             </span>
-            <span className="font-medium">{detail.value}</span>
+            {data.value ?
+              <span className="font-medium">{detail.value || '-'}</span> :
+              <span className="font-medium">-</span>
+            }
           </div>
         ))}
 
-        <div className="rounded-md bg-muted p-3">
+        {data.value ? <div className="rounded-md bg-muted p-3">
           <p className="text-xs text-muted-foreground">
             {data.note}
           </p>
-        </div>
+        </div> : null}
       </CardContent>
     </Card>
   )

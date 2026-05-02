@@ -1,4 +1,4 @@
-import { SettingPrefrenceFormSchema } from "../validations/settings"
+import { SettingPrefrenceFormSchema } from "@/lib/validations/settings"
 import { ContentTone, ContentType } from "./content"
 
 export type Preference = {

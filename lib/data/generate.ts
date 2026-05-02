@@ -1,5 +1,5 @@
 import type { ContentType, ContentTone, ContentStatus, PromptSuggestionItem } from "@/lib/types/content"
-import { SettingPrefrenceFormSchema } from "../validations/settings"
+import { SettingPrefrenceFormSchema } from "@/lib/validations/settings"
 
 export const ideaTypes: Record<ContentType, string> = {
   "blog_idea": "Blog Idea",

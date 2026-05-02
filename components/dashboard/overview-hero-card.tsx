@@ -11,6 +11,8 @@ import {
 import { ContentItem } from "@/lib/types/content"
 import { ideaStatus } from "@/lib/data/generate"
 import { relativeDate } from "@/lib/utils/date-format"
+import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export default function DashboardOverviewHeroCard({
   total,
@@ -21,7 +23,33 @@ export default function DashboardOverviewHeroCard({
   content?: ContentItem
   published?: ContentItem
 }) {
-  return (
+  return !total && !content && !published ? (
+    <Card className="space-y-6 rounded-sm border-0 bg-primary text-primary-foreground flex flex-col h-full justify-center">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">
+          <div className="flex items-center gap-2 min-w-0">
+            <Sparkles className="h-5 w-5 shrink-0" />
+            <span className="truncate">Your workspace is ready!</span>
+          </div>
+        </CardTitle>
+
+        <CardDescription className="max-w-2xl text-xs leading-6 text-primary-foreground/80">
+          Start generating high-quality content ideas and watch your engagement grow. Your creative journey begins here.
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div>
+          <Link href="/generate">
+            <Button
+              variant="secondary"
+              size="lg">
+              Generate First Content
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
+  ) : (
     <Card className="space-y-6 rounded-sm border-0 bg-primary text-primary-foreground flex flex-col h-full justify-center">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">

@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 import { Bell, BellOff, RefreshCcw } from "lucide-react"
 import { useMarkAllNotificationsAsRead, useMarkAllNotificationsAsUnread, useMarkNotificationAsRead, useNotifications } from "@/hooks/use-notifications";
-import { getExcerpt } from "../contents/contents-helper";
+import { getExcerpt } from "@/components/contents/contents-helper";
 
 function NotificationColor(type: string) {
   if (["content_generated", "content_ready", "content_published"].includes(type)) return "dark:bg-green-300/50! bg-green-100!"

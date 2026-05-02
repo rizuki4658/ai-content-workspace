@@ -1,4 +1,4 @@
-import { getStoredContents } from "../storage/content"
+import { getStoredContents } from "@/lib/storage/content"
 import { ContentItem } from "@/lib/types/content";
 import type { DashboardStatsResponse, DashboardSummaryResponse } from "@/lib/types/dashboard";
 import { ideaTypes, promptSuggestions } from "@/lib/data/generate";

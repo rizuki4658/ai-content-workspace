@@ -32,8 +32,8 @@ export default function DashboardContentDistributionSummarySection() {
   return (
     !isLoading && !isFetching ?
     <div className="grid grid-flow-dense gap-6 md:grid-cols-2">
-      <DashboardContentDistributionCard data={items} />
-      <DashboardContentSummaryCard data={items} />
+      <DashboardContentDistributionCard data={items} total={data?.total} />
+      <DashboardContentSummaryCard data={items} total={data?.total} />
     </div> : <DashboardContentDistributionSummarySkeleton />
   )
 }

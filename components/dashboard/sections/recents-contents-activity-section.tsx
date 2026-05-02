@@ -22,13 +22,13 @@ export default function DashboardRecentsContentsActivitySection() {
   })
 
   return (
-    <div className="grid grid-flow-dense gap-6 md:grid-cols-2">
+    !!dataRecents?.length || !!dataActivities?.length ? <div className="grid grid-flow-dense gap-6 md:grid-cols-2">
       {!isLoadingRecents && !isFetchingRecents ?
         <DashboardRecentsContentsCard data={dataRecents || []} /> : <DashboardRecentsContentsSkeleton/>
       }
       {!isLoadingActivities && !isFetchingActivities ?
         <DashboardRecentsActivityCard data={dataActivities || []} /> : <DashboardRecentsActivitySkeleton/>
       }
-    </div>
+    </div> : null
   )
 }

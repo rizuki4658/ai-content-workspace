@@ -10,8 +10,9 @@ import {
 
 import DashboardContentDistributionChart from "./content-distribution-chart"
 
-export default function DashboardContentDistributionCard({ data }: {
+export default function DashboardContentDistributionCard({ data, total }: {
   data: DashboardContentDistribution[];
+  total?: number
 }) {
   return (
     <Card className="rounded-sm">
@@ -25,7 +26,7 @@ export default function DashboardContentDistributionCard({ data }: {
       </CardHeader>
   
       <CardContent className="flex items-center justify-center h-65">
-        <DashboardContentDistributionChart data={data} />
+        <DashboardContentDistributionChart data={data} total={total} />
       </CardContent>
     </Card>
   )

@@ -25,25 +25,25 @@ const getStatConfig = (type: string, count: number) => {
     total: {
       label: "Total Content",
       desc: count > 0 ? "Across all saved contents" : "No contents saved yet",
-      color: 'bg-primary/10 text-primary',
+      color: count > 0 ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground',
       icon: Layers
     },
     draft: {
       label: "Draft",
       desc: count > 0 ? `${count} items need review` : "All caught up!",
-      color: contentStatusColorMap['draft'],
+      color: count > 0 ? contentStatusColorMap['draft'] : 'bg-muted text-muted-foreground',
       icon: contentStatusIconMap['draft']
     },
     ready: {
       label: "Ready",
       desc: count > 0 ? "Approved for publishing" : "No content ready yet",
-      color: contentStatusColorMap['ready'],
+      color: count > 0 ? contentStatusColorMap['ready'] : 'bg-muted text-muted-foreground',
       icon: contentStatusIconMap['ready']
     },
     published: {
       label: "Published",
       desc: count > 0 ? "Successfully live" : "Nothing published yet",
-      color: contentStatusColorMap['published'],
+      color: count > 0 ? contentStatusColorMap['published'] : 'bg-muted text-muted-foreground',
       icon: contentStatusIconMap['published']
     }
   }

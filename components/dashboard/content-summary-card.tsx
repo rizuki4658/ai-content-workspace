@@ -8,9 +8,11 @@ import {
 } from "@/components/ui/card"
 
 export default function DashboardContentSummaryCard({
-  data
+  data,
+  total
 }: {
-  data: DashboardContentDistribution[]
+  data: DashboardContentDistribution[];
+  total?: number
 }) {
   const sorted = [...data].sort((a, b) => b.value - a.value)
   const top = sorted[0]
@@ -32,14 +34,16 @@ export default function DashboardContentSummaryCard({
               <div key={item.name} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <div className="flex min-w-0 items-center gap-2">
-                    <span
+                    {!!total ? <span
                       className="h-2.5 w-2.5 rounded-full"
                       style={{ backgroundColor: item.fill }}
-                    />
+                    /> : <span
+                      className="h-2.5 w-2.5 rounded-full bg-muted"
+                    />}
                     <span className="truncate text-muted-foreground">
                       {item.name}
                     </span>
-                    {isTop ? (
+                    {isTop && !!total ? (
                       <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
                         Top
                       </span>
@@ -65,12 +69,12 @@ export default function DashboardContentSummaryCard({
           })}
         </div>
   
-        <div className="rounded-md bg-muted p-3">
+        {!!total ? <div className="rounded-md bg-muted p-3">
           <p className="text-xs leading-5 text-muted-foreground">
             {top?.name} is currently the dominant content type with {top?.value}% of
             total generated output.
           </p>
-        </div>
+        </div> : null }
       </CardContent>
     </Card>
   )

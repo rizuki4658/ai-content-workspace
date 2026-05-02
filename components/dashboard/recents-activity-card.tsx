@@ -17,7 +17,7 @@ import { activityIconMap } from '@/lib/utils/dashboard-icon-maps'
 import { getExcerpt } from "@/components/contents/contents-helper"
 
 export default function DashboardRecentsActivityCard({ data }: { data: ContentItem[] }) {
-  return (
+  return data.length ? (
     <Card className="rounded-sm">
       <CardHeader>
         <div className="flex items-center justify-between gap-4">
@@ -75,5 +75,5 @@ export default function DashboardRecentsActivityCard({ data }: { data: ContentIt
         })}
       </CardContent>
     </Card>
-  )
+  ) : null
 }

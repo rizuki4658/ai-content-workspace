@@ -56,7 +56,7 @@ function CustomTooltip({ active, payload }: any) {
   )
 }
 
-export function AnalyticsTypeStatusSectionSummary({ data }: { data?: any[] }) {
+export function AnalyticsTypeStatusSectionSummary({ data, total }: { data?: any[], total?: number }) {
   if (!data?.length) return null
 
   const sorted = [...data].sort((a, b) => b.value - a.value)
@@ -72,14 +72,16 @@ export function AnalyticsTypeStatusSectionSummary({ data }: { data?: any[] }) {
             <div key={item.name} className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex min-w-0 items-center gap-2">
-                  <span
+                  {!!total ? <span
                     className="h-2.5 w-2.5 shrink-0 rounded-full"
                     style={{ backgroundColor: item.fill }}
-                  />
+                  /> : <span
+                    className="h-2.5 w-2.5 shrink-0 rounded-full bg-muted"
+                  />}
                   <span className="truncate text-muted-foreground">
                     {item.name}
                   </span>
-                  {isTop ? (
+                  {isTop && !!total ? (
                     <span className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">
                       Top
                     </span>
@@ -105,12 +107,12 @@ export function AnalyticsTypeStatusSectionSummary({ data }: { data?: any[] }) {
         })}
       </div>
 
-      <div className="rounded-md bg-muted p-3">
+      {!!total ? <div className="rounded-md bg-muted p-3">
         <p className="text-xs leading-5 text-muted-foreground">
           {top?.name} is currently the dominant content type with {top?.value}% of
           total generated output.
         </p>
-      </div>
+      </div> : null }
     </div>
   )
 }
@@ -148,7 +150,7 @@ export default function AnalyticsTypeStatusSection({
             </CardDescription>
           </CardHeader>
 
-          <div className="h-65 w-full flex items-center justify-center relative">
+          {!!data?.total ? <div className="h-65 w-full flex items-center justify-center relative">
             <ResponsiveContainer width={200} height={200}>
               <PieChart>
                 <Tooltip content={<CustomTooltip />} />
@@ -182,7 +184,11 @@ export default function AnalyticsTypeStatusSection({
                 ))}
               </div>
             </div>
-          </div>
+          </div> : <div className="h-65 w-full flex items-center justify-center relative">
+            <div className="w-40 h-40 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
+              No content yet!
+            </div>
+          </div>}
         </CardContent>
       </Card>
       <Card className="rounded-sm p-0! block!">
@@ -194,7 +200,7 @@ export default function AnalyticsTypeStatusSection({
             <CardDescription>
               <p className="text-xs text-muted-foreground">Distribution by workflow status</p>
             </CardDescription>
-            <AnalyticsTypeStatusSectionSummary data={items} />
+            <AnalyticsTypeStatusSectionSummary data={items} total={data?.total} />
           </CardHeader>
         </CardContent>
       </Card>

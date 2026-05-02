@@ -52,11 +52,13 @@ function CustomTooltip({ active, payload }: any) {
 
 export default function DashboardContentDistributionChart({
   data,
+  total
 }: {
-  data: DashboardContentDistribution[]
+  data: DashboardContentDistribution[];
+  total?: number;
 }) {
 
-  return (
+  return !!total ? (
     <div className="h-65 w-full flex items-center justify-center relative">
       <ResponsiveContainer width={200} height={200}>
         <PieChart>
@@ -90,6 +92,12 @@ export default function DashboardContentDistributionChart({
             </div>
           ))}
         </div>
+      </div>
+    </div>
+  ) : (
+    <div className="h-65 w-full flex items-center justify-center relative">
+      <div className="h-40 w-40 rounded-full bg-muted flex items-center justify-center">
+        <p className="text-muted-foreground">No content yet</p>
       </div>
     </div>
   )

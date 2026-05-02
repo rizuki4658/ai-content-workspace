@@ -9,11 +9,11 @@ import { Badge } from "@/components/ui/badge"
 import { ideaTones, ideaTypes } from "@/lib/data/generate"
 import { GetAnalyticsResponse } from "@/lib/types/analytics"
 import { contentToneColorMap, contentTypeColorMap } from "@/lib/data/contents"
-import { BrainCircuit, FileText, Volume2 } from "lucide-react"
+import { BrainCircuit, FileText, ServerOff, Volume2 } from "lucide-react"
 import { relativeDate } from "@/lib/utils/date-format"
-import { renderBadge } from "../contents/contents-helper"
+import { renderBadge } from "@/components/contents/contents-helper"
 import Link from "next/link"
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import AnalyticsRecentsInsightsSkeleton from "./skeletons/analytics-recents-insights-skeleton"
 
 function AnalyticsRecentsInsightsSectionDescription({ item }: { item: any }) {
@@ -51,6 +51,9 @@ export default function AnalyticsRecentsInsightsSection({
   loading: boolean;
   fetching: boolean;
 }) {
+  const getTotalInsight = () => {
+    return data?.insights?.filter(insight => !!insight?.type)
+  }
   return (
     !loading && !fetching ? <div className="grid md:grid-cols-4 gap-6">
       <div className="md:col-span-3">
@@ -61,12 +64,12 @@ export default function AnalyticsRecentsInsightsSection({
             </CardTitle>
             <CardDescription>
               <p className="text-xs">
-                Latest updates across your content
+                {!!data?.recents?.length ? 'Latest updates across your content' : 'No summary yet' }
               </p>
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
-            {data?.recents?.map((content) => (
+            {!!data?.recents?.length ? data?.recents?.map((content) => (
               <div
                 key={content.id}
                 className="group flex items-start justify-between gap-3 rounded-md border p-3 transition hover:bg-muted"
@@ -93,7 +96,16 @@ export default function AnalyticsRecentsInsightsSection({
 
                 {renderBadge({ item: content, key: 'status' })}
               </div>
-            ))}
+            )) : (
+              <div className="flex flex-col h-80 justify-center items-center text-center p-6 border-2 border-dashed rounded-xl border-muted/20">
+                <div className="bg-muted/10 p-6 rounded-full mb-4">
+                  <ServerOff className="w-12 h-12 text-muted-foreground/60" />
+                </div>
+                <p className="text-muted-foreground mt-2 mb-6 whitespace-normal max-w-96 w-full">
+                  Your workspace is empty. Start generating AI content to see them listed here.
+                </p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -105,7 +117,7 @@ export default function AnalyticsRecentsInsightsSection({
             </CardTitle>
             <CardDescription>
               <p className="text-xs">
-                Quick summary of your content patterns
+                {!!getTotalInsight()?.length ? 'Quick summary of your content patterns' : 'No insight yet'}
               </p>
             </CardDescription>
           </CardHeader>
@@ -115,7 +127,7 @@ export default function AnalyticsRecentsInsightsSection({
                 key={key}
                 className="space-y-4">
                 <div>
-                  <p className="text-xs text-muted-foreground">{item.label}</p>
+                  <p className="text-xs text-muted-foreground">{item?.label || '-'}</p>
                   <AnalyticsRecentsInsightsSectionDescription item={item} />
                 </div>
               </div>

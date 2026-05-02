@@ -17,7 +17,7 @@ export default function AnalyticsTypeStatusSkeleton() {
           </CardHeader>
 
           <div className="h-65 w-full flex items-center justify-center relative">
-            <Skeleton className="h-50 w-50 rounded-full" />
+            <Skeleton className="h-40 w-40 rounded-full" />
 
             <div className="absolute -bottom-1 left-0 right-0">
               <div className="flex w-full flex-wrap justify-center gap-x-4 gap-y-2">

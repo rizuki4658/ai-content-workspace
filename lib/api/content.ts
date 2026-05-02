@@ -41,6 +41,21 @@ export async function getContents(params: ContentFilter = {}): Promise<GetConten
   }
 }
 
+export async function getAllContents(): Promise<ContentItem[] | undefined> {
+
+  try {
+
+    const response = getStoredContents()
+    const result = response?.data?.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+
+    await wait(1000)
+
+    return result
+  } catch (error) {
+    return undefined
+  }
+}
+
 export async function getContentById(id?: ContentItem["id"]): Promise<ContentItem | undefined> {
 
   try {

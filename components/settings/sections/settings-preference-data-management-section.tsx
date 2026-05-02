@@ -1,7 +1,7 @@
 "use client"
 
-import SettingsDataManagementCard from "../settings-data-management-card"
-import SettingsPreferencesCard from "../settings-preferences-card"
+import SettingsDataManagementCard from "@/components/settings/settings-data-management-card"
+import SettingsPreferencesCard from "@/components/settings/settings-preferences-card"
 
 export default function SettingsPreferenceDataManagementSection() {
   return (
