@@ -3,29 +3,9 @@ import { toast } from "sonner"
 import { Preference } from "@/lib/types/settings"
 import { ContentItem } from "@/lib/types/content"
 
-const STORAGE_KEY = process.env.PREFERENCE_STORAGE_KEY || 'ai-content-workspace-preference'
-const STORAGE_KEY_CONTENTS = process.env.CONTENTS_STORAGE_KEY || 'ai-content-workspace-contents'
-
 const wait = (ms: number) =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-function getStoredPreferences() {
-  if (typeof window === "undefined") return null
-
-  const raw = localStorage.getItem(STORAGE_KEY)
-
-  if (!raw) return null
-
-  try {
-    return JSON.parse(raw)
-  } catch {
-    return null
-  }
-}
-
-function setStoredPreference(preference: Preference) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(preference))
-}
 
 export async function getPreference(): Promise<Preference> {
   const DEFAULT_PREFERENCE: Preference = {
@@ -36,7 +16,7 @@ export async function getPreference(): Promise<Preference> {
   };
 
   try {
-    const result = await db.userPreference.get('settings')
+    const result = await db.userPreference.toCollection().first()
     
     return result || DEFAULT_PREFERENCE
   } catch (error) {

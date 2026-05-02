@@ -66,9 +66,9 @@ export async function seedDefaultData() {
     if (!userPreference) {
         await db.userPreference.put({
           id: 'settings',
-          type: "blog_idea",
-          tone: "professional",
-          theme: "system",
+          type: "social_media",
+          tone: "friendly",
+          theme: "dark",
           updatedAt: new Date().toISOString()
         })
       }

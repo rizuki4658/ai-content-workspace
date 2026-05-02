@@ -140,7 +140,12 @@ function SettingsPreferencesForm({
         type: values.type,
       },
     })
-    await updatePreference(values)
+    await updatePreference({
+      id: "settings",
+      tone: values.tone,
+      type: values.type,
+      theme: values.theme
+    })
   }
 
   return (
