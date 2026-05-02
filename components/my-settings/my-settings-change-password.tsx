@@ -49,7 +49,6 @@ export default function MySettingsChangePassword() {
     setIsLoading(true)
 
     try {
-      console.log("Submitting:", data)
       await new Promise((resolve) => setTimeout(resolve, 1500))
       reset()
       setOpen(false)

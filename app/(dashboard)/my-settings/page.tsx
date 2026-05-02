@@ -1,8 +1,8 @@
 import { Suspense } from "react"
 import type { Metadata } from "next"
 
-import MySettingsCard from "@/components/may-settings/my-settings-card"
-import MySettingsSkeleton from "@/components/may-settings/my-settings-skeleton"
+import MySettingsCard from "@/components/my-settings/my-settings-card"
+import MySettingsSkeleton from "@/components/my-settings/my-settings-skeleton"
 
 export const metadata: Metadata = {
   title: "My Settings - AI Content Workspace",

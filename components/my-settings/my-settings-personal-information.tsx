@@ -12,6 +12,9 @@ import {
 import { Button } from "../ui/button"
 import { Field, FieldError, FieldLabel } from "../ui/field"
 import { Input } from "../ui/input"
+import { User } from "@/lib/types/user"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { updateUserProfile } from "@/lib/api/user"
 
 const initialValues: MySettingsFormSchema = {
   name: "-",
@@ -20,23 +23,68 @@ const initialValues: MySettingsFormSchema = {
   bio: "-",
 }
 
-export default function MySettingsPersonalInformation() {
+export default function MySettingsPersonalInformation({
+  data
+} : {
+  data?: User
+}) {
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
   } = useForm<MySettingsFormSchema>({
     resolver: zodResolver(mySettingsFormSchema),
-    defaultValues: initialValues,
+    defaultValues: data || initialValues,
     mode: "onSubmit",
   })
+  const queryClient = useQueryClient()
+  const { mutateAsync: updatePersonalInfo } = useMutation({
+    mutationFn: async (payload: User) => updateUserProfile(payload),
+
+    onMutate: async (newVariable) => {
+      await queryClient.cancelQueries({ queryKey: ['user'] })
+
+      const previousContents = queryClient.getQueriesData<User>({
+        queryKey: ['user'],
+      })
+
+      queryClient.setQueriesData<User>(
+        { queryKey: ['user'] },
+        (old) => {
+          if (!old) return old
+
+          return {
+            ...old,
+            ...newVariable
+          }
+        }
+      )
+
+      return { previousContents }
+    },
+
+    onError: (_err, _variables, context) => {
+      context?.previousContents?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data)
+      })
+    }
+  })
+
 
   const onSubmit = async (values: MySettingsFormSchema) => {
-    console.log("saved profile:", values)
+    if (data) {
+      await updatePersonalInfo({
+        ...data,
+        ...values
+      })
+    }
   }
 
   return (
-    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="space-y-4"
+      autoCapitalize="off"
+      onSubmit={handleSubmit(onSubmit)}>
       <div className="grid gap-4 md:grid-cols-2">
         <Controller
           name="name"
@@ -49,6 +97,7 @@ export default function MySettingsPersonalInformation() {
               <Input
                 id="full-name"
                 value={field.value ?? ""}
+                disabled={isSubmitting}
                 onChange={field.onChange}
                 placeholder="ex: John Doe"
               />
@@ -73,6 +122,7 @@ export default function MySettingsPersonalInformation() {
               <Input
                 id="email"
                 value={field.value ?? ""}
+                disabled={isSubmitting}
                 onChange={field.onChange}
                 placeholder="ex: example@mail.com"
               />
@@ -102,6 +152,7 @@ export default function MySettingsPersonalInformation() {
               <Input
                 id="username"
                 value={field.value ?? ""}
+                disabled={isSubmitting}
                 onChange={field.onChange}
                 placeholder="ex: johndoe123"
               />
@@ -129,6 +180,7 @@ export default function MySettingsPersonalInformation() {
               <Input
                 id="bio"
                 value={field.value ?? ""}
+                disabled={isSubmitting}
                 onChange={field.onChange}
                 placeholder="ex: Frontend Developer"
               />

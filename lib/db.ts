@@ -2,14 +2,13 @@ import Dexie, { type Table } from 'dexie';
 import type { ContentItem } from "@/lib/types/content";
 import type { NotificationItem } from '@/lib/types/notifications';
 import { Preference } from '@/lib/types/settings';
-import { User } from '@/lib/types/my-settings';
+import { User } from '@/lib/types/user';
 
 export async function seedDefaultData() {
   try {
     const contentCount = await db.contents.count()
     const notificationCount = await db.notifications.count()
     const userPreference =  await db.userPreference.get('settings')
-    const userProfile = await db.userProfile.count()
 
     if (contentCount === 0) {
       const defaultContents: Omit<ContentItem, 'id'>[] = [
@@ -64,25 +63,13 @@ export async function seedDefaultData() {
     }
 
     if (!userPreference) {
-        await db.userPreference.put({
-          id: 'settings',
-          type: "social_media",
-          tone: "friendly",
-          theme: "dark",
-          updatedAt: new Date().toISOString()
-        })
-      }
-
-    if (userProfile === 0) {
-      const defaultUserProfile: Omit<User, 'id'>[] = [
-        {
-          email: 'johndoe@mail.com',
-          name: 'John Doe',
-          image: '',
-          lastLogin: new Date(Date.now()).toISOString()
-        }
-      ]
-      await db.userProfile.bulkAdd(defaultUserProfile as User[])
+      await db.userPreference.put({
+        id: 'settings',
+        type: "social_media",
+        tone: "friendly",
+        theme: "dark",
+        updatedAt: new Date().toISOString()
+      })
     }
 
     console.log("Seeding completed successfully!")
