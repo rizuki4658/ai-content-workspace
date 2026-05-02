@@ -63,6 +63,8 @@ export async function updateImageProfile(payload: { email: string; image: string
 
 export async function logoutUser() {
   await db.userProfile.clear()
+  document.cookie = "auth_email=; path=/; max-age=0"
+  document.cookie = "is_logged=; path=/; max-age=0"
   await wait(1000)
   localStorage.removeItem("currentUserEmail")
   localStorage.removeItem("isLoggedIn")
@@ -94,6 +96,8 @@ export async function loginOrRegister(email: string, name?: string) {
 
     localStorage.setItem("currentUserEmail", cleanEmail)
     localStorage.setItem("isLoggedIn", "true")
+    document.cookie = `auth_email=${cleanEmail}; path=/; max-age=86400; SameSite=Lax`
+    document.cookie = `is_logged=true; path=/; max-age=86400; SameSite=Lax`
 
     return { success: true }
   } catch (error) {
