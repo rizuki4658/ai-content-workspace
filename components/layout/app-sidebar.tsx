@@ -22,6 +22,7 @@ const ICON_MAP = {
   contents: FileText,
   analytics: ChartPie,
   settings: Settings,
+  privacy: AlertCircle
 } as const
 
 type IconName = keyof typeof ICON_MAP

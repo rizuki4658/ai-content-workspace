@@ -12,6 +12,14 @@ It allows users to generate AI-powered content, manage saved content, review ana
 
 The project is not designed as a simple UI prototype. It focuses on realistic frontend behavior, structured data flow, responsive layouts, and maintainable architecture.
 
+## Data & Privacy
+
+This project stores demo data locally in the browser using IndexedDB.
+
+There is no backend server, account system, or external database. Generated content, settings, and preferences are stored only on the user’s device/browser.
+
+This project does not collect, sell, or share personal data. It is built as a frontend portfolio demo to simulate a realistic SaaS-style product experience.
+
 ## Core Features
 
 - Dashboard overview with real computed stats

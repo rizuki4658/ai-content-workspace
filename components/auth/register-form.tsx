@@ -179,8 +179,9 @@ export default function RegisterForm() {
             </div>
           </form>
 
-          <div className="mt-6 text-center text-xs text-zinc-500">
+          <div className="mt-6 text-center text-xs text-zinc-500 space-y-4">
             <p>No password required. Your data stays in this browser.</p>
+            <Link href="/privacy" className="text-primary">Data & Privacy</Link>
           </div>
         </CardContent>
       </Card>

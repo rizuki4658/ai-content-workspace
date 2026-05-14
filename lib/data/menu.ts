@@ -36,6 +36,11 @@ export const Menus: MenuGroup[] = [
       url: '/settings',
       icon: 'Settings',
       key: 'settings'
+    }, {
+      name: 'Data & Privacy',
+      url: '/privacy',
+      icon: 'AlertCircle',
+      key: 'privacy'
     }]
   }
 ]
