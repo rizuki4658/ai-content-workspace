@@ -31,7 +31,7 @@ export function middleware(request: NextRequest) {
   const isAuthenticated = isLogged && Boolean(authEmail)
 
   if (isProtectedRoute && !isAuthenticated) {
-    const loginUrl = new URL("/login")
+    const loginUrl = new URL("/login", request.url)
 
     loginUrl.searchParams.set("callbackUrl", pathname)
 
@@ -39,7 +39,7 @@ export function middleware(request: NextRequest) {
   }
 
   if (isAuthRoute && isAuthenticated) {
-    return NextResponse.redirect(new URL("/dashboard"))
+    return NextResponse.redirect(new URL("/dashboard", request.url))
   }
 
   return NextResponse.next()
